@@ -6,19 +6,32 @@ public class User {
     String _email;
     String _uname;
     String _pass;
-    String is_faculty;
+    String _user_type;
 
     public User() {
     }
 
     public User(String _uid, String _name, String _email, String _uname,
-                String _pass, String is_faculty) {
+                String _pass, String _user_type) {
         this._uid = _uid;
         this._name = _name;
         this._email = _email;
         this._uname = _uname;
         this._pass = _pass;
-        this.is_faculty = is_faculty;
+        this._user_type = _user_type;
+    }
+
+    public User(String _name, String _email, String _uname,
+                String _pass, String _user_type) {
+        this._name = _name;
+        this._email = _email;
+        this._uname = _uname;
+        this._pass = _pass;
+        this._user_type = _user_type;
+    }
+
+    public User(String _pass) {
+        this._pass = _pass;
     }
 
     public String get_uid() {
@@ -61,11 +74,11 @@ public class User {
         this._pass = _pass;
     }
 
-    public String getIs_faculty() {
-        return is_faculty;
+    public String getUser_type() {
+        return _user_type;
     }
 
-    public void setIs_faculty(String is_faculty) {
-        this.is_faculty = is_faculty;
+    public void setUser_type(String _user_type) {
+        this._user_type = _user_type;
     }
 }

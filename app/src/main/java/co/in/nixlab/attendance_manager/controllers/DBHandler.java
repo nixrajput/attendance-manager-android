@@ -14,15 +14,15 @@ import co.in.nixlab.attendance_manager.models.User;
 
 public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = String.valueOf(R.string.DB_NAME);
-    private static final String TABLE_USERS = String.valueOf(R.string.USERS);
+    private static final String DATABASE_NAME = "attendance_manager";
+    private static final String TABLE_USERS = "users";
 
     private static final String KEY_UID = "uid";
     private static final String KEY_NAME = "name";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_UNAME = "uname";
     private static final String KEY_PASS = "pass";
-    private static final String KEY_IS_FACULTY = "is_faculty";
+    private static final String KEY_USER_TYPE = "user_type";
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -30,9 +30,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_USERS_TABLE = "CREATE TABLE" + TABLE_USERS + "(" + KEY_UID +
-                " TEXT PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_EMAIL + " TEXT," +
-                KEY_UNAME + " TEXT," + KEY_PASS + " TEXT," + KEY_IS_FACULTY + " BOOLEAN" + ")";
+        String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + "(" + KEY_UID +
+                " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_EMAIL + " TEXT," +
+                KEY_UNAME + " TEXT," + KEY_PASS + " TEXT," + KEY_USER_TYPE + " TEXT" + ")";
         db.execSQL(CREATE_USERS_TABLE);
     }
 
@@ -42,7 +42,7 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addUser(User user) {
+    public void addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -50,19 +50,38 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(KEY_EMAIL, user.get_email());
         values.put(KEY_UNAME, user.get_uname());
         values.put(KEY_PASS, user.get_pass());
-        values.put(KEY_IS_FACULTY, user.getIs_faculty());
+        values.put(KEY_USER_TYPE, user.getUser_type());
 
         db.insert(TABLE_USERS, null, values);
         db.close();
     }
 
-    User getUser(String uid) {
+    public User loginUser(String uname, String pass) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_USERS, new String[]
+                {KEY_UID, KEY_NAME, KEY_EMAIL, KEY_UNAME, KEY_PASS, KEY_USER_TYPE},
+                KEY_UNAME + "=?",
+                new String[] {uname}, null, null, null);
+        if(cursor != null && cursor.moveToFirst() && cursor.getCount() > 0) {
+            User currentUser  = new User(cursor.getString(4));
+            if(pass.equals(currentUser.get_pass()))
+                return currentUser;
+        }
+        assert cursor != null;
+        cursor.close();
+        db.close();
+        return null;
+    }
+
+    public User getUser(String uid) {
         SQLiteDatabase db = this.getReadableDatabase();
         User user;
         Cursor cursor;
 
-        cursor = db.query(TABLE_USERS, new String[]{KEY_UID, KEY_NAME, KEY_EMAIL,
-                        KEY_UNAME, KEY_PASS, KEY_IS_FACULTY}, KEY_UID + "=?",
+        cursor = db.query(TABLE_USERS, new String[]
+                        {KEY_UID, KEY_NAME, KEY_EMAIL, KEY_UNAME, KEY_PASS, KEY_USER_TYPE},
+                KEY_UID + "=?",
                 new String[]{uid}, null, null, null, null);
 
         if (cursor != null)
@@ -75,6 +94,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 cursor.getString(4), cursor.getString(5));
 
         cursor.close();
+        db.close();
         return user;
     }
 
@@ -94,11 +114,12 @@ public class DBHandler extends SQLiteOpenHelper {
                 user.set_email(cursor.getString(2));
                 user.set_uname(cursor.getString(3));
                 user.set_pass(cursor.getString(4));
-                user.setIs_faculty(cursor.getString(5));
+                user.setUser_type(cursor.getString(5));
                 userList.add(user);
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
         return userList;
     }
 
@@ -110,7 +131,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(KEY_EMAIL, user.get_email());
         values.put(KEY_UNAME, user.get_uname());
         values.put(KEY_PASS, user.get_pass());
-        values.put(KEY_IS_FACULTY, user.getIs_faculty());
+        values.put(KEY_USER_TYPE, user.getUser_type());
 
         return db.update(TABLE_USERS, values, KEY_UID + " = ?",
                 new String[]{user.get_uid()});
@@ -131,6 +152,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String GET_USERS_COUNT = "SELECT * FROM " + TABLE_USERS;
         cursor = db.rawQuery(GET_USERS_COUNT, null);
         cursor.close();
+        db.close();
         return cursor.getCount();
     }
 }

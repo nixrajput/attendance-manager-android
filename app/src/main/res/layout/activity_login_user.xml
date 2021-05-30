@@ -4,56 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.AddUserActivity">
+    tools:context=".views.LoginUserActivity">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/ADD_USER"
-        android:textAllCaps="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/LOGIN"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/save_user_btn"
+        app:layout_constraintBottom_toTopOf="@+id/login_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
+        app:layout_constraintTop_toBottomOf="@+id/divider2">
 
         <LinearLayout
             android:id="@+id/form_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/edt_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:autofillHints="@string/FULL_NAME"
-                android:ems="10"
-                android:hint="@string/FULL_NAME"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/edt_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:autofillHints="@string/EMAIL"
-                android:ems="10"
-                android:hint="@string/EMAIL"
-                android:inputType="textEmailAddress" />
 
             <EditText
                 android:id="@+id/edt_uname"
@@ -99,13 +87,13 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/save_user_btn"
+        android:id="@+id/login_btn"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
-        android:text="@string/SAVE"
+        android:text="@string/LOGIN"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

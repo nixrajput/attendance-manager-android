@@ -11,6 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AttendanceManager">
+        <activity android:name=".views.DashboardActivity"></activity>
+        <activity android:name=".views.LoginUserActivity" />
+        <activity android:name=".views.ViewUsersActivity" />
         <activity android:name=".views.AddUserActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
