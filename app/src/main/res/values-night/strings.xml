@@ -20,4 +20,11 @@
     <string name="LOGIN">Login</string>
     <string name="LOGIN_HERE">Login Here</string>
     <string name="DASHBOARD">Dashboard</string>
+    <string name="VIEW_USERS">View Users</string>
+    <string name="MANAGE_USER">Manage User</string>
+    <string name="ADD_STUDENT">Add Student</string>
+    <string name="VIEW_STUDENTS">View Students</string>
+    <string name="MANAGE_ATTENDANCE">Manage Attendance</string>
+    <string name="MENU">Menu Button</string>
+    <string name="DELETE_BUTTON">Delete Button</string>
 </resources>

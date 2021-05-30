@@ -27,11 +27,11 @@ public class AddUserActivity extends AppCompatActivity {
 
         contextView = findViewById(android.R.id.content).getRootView();
 
-         name = (EditText) findViewById(R.id.edt_name);
-         email = (EditText) findViewById(R.id.edt_email);
-         uname = (EditText) findViewById(R.id.edt_uname);
-         pass = (EditText) findViewById(R.id.edt_pass);
-         userTypeGroup = (RadioGroup) findViewById(R.id.user_type_radio_grp);
+        name = (EditText) findViewById(R.id.edt_name);
+        email = (EditText) findViewById(R.id.edt_email);
+        uname = (EditText) findViewById(R.id.edt_uname);
+        pass = (EditText) findViewById(R.id.edt_pass);
+        userTypeGroup = (RadioGroup) findViewById(R.id.user_type_radio_grp);
 
         Button saveUserBtn = (Button) findViewById(R.id.save_user_btn);
 
@@ -53,8 +53,7 @@ public class AddUserActivity extends AppCompatActivity {
                 userTypeSelectedId == -1) {
             Snackbar.make(contextView, "All fields are required.",
                     Snackbar.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             user = new User(name.getText().toString(), email.getText().toString(),
                     uname.getText().toString(), pass.getText().toString(),
                     userTypeBtn.getText().toString().toUpperCase());

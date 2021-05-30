@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.in.nixlab.attendance_manager.R;
 import co.in.nixlab.attendance_manager.models.User;
 
 public class DBHandler extends SQLiteOpenHelper {
@@ -60,12 +59,12 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_USERS, new String[]
-                {KEY_UID, KEY_NAME, KEY_EMAIL, KEY_UNAME, KEY_PASS, KEY_USER_TYPE},
+                        {KEY_UID, KEY_NAME, KEY_EMAIL, KEY_UNAME, KEY_PASS, KEY_USER_TYPE},
                 KEY_UNAME + "=?",
-                new String[] {uname}, null, null, null);
-        if(cursor != null && cursor.moveToFirst() && cursor.getCount() > 0) {
-            User currentUser  = new User(cursor.getString(4));
-            if(pass.equals(currentUser.get_pass()))
+                new String[]{uname}, null, null, null);
+        if (cursor != null && cursor.moveToFirst() && cursor.getCount() > 0) {
+            User currentUser = new User(cursor.getString(4));
+            if (pass.equals(currentUser.get_pass()))
                 return currentUser;
         }
         assert cursor != null;
@@ -140,7 +139,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void deleteUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(TABLE_USERS, KEY_UID + " = ?",
+        db.delete(TABLE_USERS, KEY_UID + "=?",
                 new String[]{user.get_uid()});
         db.close();
     }
