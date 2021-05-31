@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.LoginUserActivity">
+    tools:context=".views.LoginActivity2">
 
     <TextView
         android:id="@+id/textView2"
@@ -63,26 +63,12 @@
                 android:hint="@string/ASTERISK"
                 android:inputType="textPassword" />
 
-            <RadioGroup
-                android:id="@+id/user_type_radio_grp"
+            <Spinner
+                android:id="@+id/spinnerLoginAs"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp">
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp" />
 
-                <RadioButton
-                    android:id="@+id/faculty_radio_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/FACULTY"
-                    android:textAllCaps="true" />
-
-                <RadioButton
-                    android:id="@+id/student_radio_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/STUDENT"
-                    android:textAllCaps="true" />
-            </RadioGroup>
         </LinearLayout>
     </ScrollView>
 

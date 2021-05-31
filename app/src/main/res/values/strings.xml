@@ -26,4 +26,24 @@
     <string name="MANAGE_ATTENDANCE">Manage Attendance</string>
     <string name="MENU">Menu Button</string>
     <string name="DELETE_BUTTON">Delete Button</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="LOGOUT">Logout</string>
+    <string name="VIEW_FACULTY">View Faculty</string>
+    <string name="ADD_FACULTY">Add Faculty</string>
+    <string name="FIRSTNAME">First Name</string>
+    <string name="LASTNAME">Last Name</string>
+    <string name="MOBILE_NO">Mobile No.</string>
+    <string name="ADDRESS">Address</string>
+    <string name="SELECT_DEPT">Select Department</string>
+    <string name="SELECT_YEAR">Select Year</string>
+    <string name="SELECT_BRANCH">Select Branch</string>
+    <string name="SELECT_SEM">Select Semester</string>
+    <string name="NEXT">Next</string>
+    <string name="SEARCH_STUDENT">Search Student</string>
+    <string name="SELECT_SUBJECT">Select Subject</string>
+    <string name="ADD_ATTENDANCE">Add Attendance</string>
+    <string name="CALENDAR_BUTTON">Calender Button</string>
+    <string name="VIEW_TOTAL_ATTENDANCE">View Total Attendance</string>
+    <string name="VIEW_ATTENDANCE">View Attendance</string>
 </resources>

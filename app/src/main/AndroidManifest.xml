@@ -11,11 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AttendanceManager">
-        <activity android:name=".views.DashboardActivity"></activity>
-        <activity android:name=".views.LoginUserActivity" />
-        <activity android:name=".views.ViewUsersActivity" />
-        <activity android:name=".views.AddUserActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".views.LoginActivity"></activity>
+        <activity android:name=".views.ViewStudentByBranchSemActivity" />
+        <activity android:name=".views.ViewStudentActivity" />
+        <activity android:name=".views.ViewFacultyActivity" />
+        <activity android:name=".views.AddStudentActivity" />
+        <activity android:name=".views.ViewAttendancePerStudentActivity" />
+        <activity android:name=".views.DashboardActivity" />
+        <activity android:name=".views.AddFacultyActivity" />
+        <activity android:name=".views.ViewAttendanceByFacultyActivity" />
+        <activity android:name=".views.AddAttendanceActivity" />
+        <activity android:name=".views.AddAttendanceSessionActivity" />
+        <activity android:name=".views.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
