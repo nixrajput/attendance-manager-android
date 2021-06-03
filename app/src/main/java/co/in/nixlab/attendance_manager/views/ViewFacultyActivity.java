@@ -11,13 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 import co.in.nixlab.attendance_manager.R;
-import co.in.nixlab.attendance_manager.controllers.DBAdapter;
+import co.in.nixlab.attendance_manager.controllers.DBHandler;
 import co.in.nixlab.attendance_manager.models.Faculty;
 
 public class ViewFacultyActivity extends AppCompatActivity {
 
     ArrayList<Faculty> facultyBeanList;
-    DBAdapter dbAdapter = new DBAdapter(this);
+    DBHandler dbHandler = new DBHandler(this);
     private ArrayAdapter<String> listAdapter;
 
     @Override
@@ -26,10 +26,10 @@ public class ViewFacultyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_listview);
 
-        ListView listView = (ListView) findViewById(R.id.listview);
+        ListView listView = findViewById(R.id.listview);
         final ArrayList<String> facultyList = new ArrayList<>();
 
-        facultyBeanList = dbAdapter.getAllFaculty();
+        facultyBeanList = dbHandler.getAllFaculty();
 
         for (Faculty facultyBean : facultyBeanList) {
             String users = facultyBean.getFaculty_firstname() + " " + facultyBean.getFaculty_lastname();
@@ -52,17 +52,17 @@ public class ViewFacultyActivity extends AppCompatActivity {
                 listAdapter.notifyDataSetChanged();
                 listAdapter.notifyDataSetInvalidated();
 
-                dbAdapter.deleteFaculty(facultyBeanList.get(position).getFaculty_id());
-                facultyBeanList = dbAdapter.getAllFaculty();
+                dbHandler.deleteFaculty(facultyBeanList.get(position).getFaculty_id());
+                facultyBeanList = dbHandler.getAllFaculty();
 
                 for (Faculty facultyBean : facultyBeanList) {
                     String users = facultyBean.getFaculty_firstname() + " " + facultyBean.getFaculty_lastname();
                     facultyList.add(users);
                 }
             });
-            alertDialogBuilder.setNegativeButton("No", (dialog, id) -> {
-                dialog.cancel();
-            });
+            alertDialogBuilder.setNegativeButton("No", (dialog, id) ->
+                    dialog.cancel()
+            );
 
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();

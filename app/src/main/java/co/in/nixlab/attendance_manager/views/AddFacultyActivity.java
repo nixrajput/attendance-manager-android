@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import co.in.nixlab.attendance_manager.R;
-import co.in.nixlab.attendance_manager.controllers.DBAdapter;
+import co.in.nixlab.attendance_manager.controllers.DBHandler;
 import co.in.nixlab.attendance_manager.models.Faculty;
 
 public class AddFacultyActivity extends AppCompatActivity {
@@ -29,13 +29,13 @@ public class AddFacultyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_faculty);
 
-        facultyFirstName = (EditText) findViewById(R.id.ed_faculty_fName);
-        facultyLastName = (EditText) findViewById(R.id.ed_faculty_lName);
-        facultyPhone = (EditText) findViewById(R.id.ed_faculty_phone);
-        facultyAddress = (EditText) findViewById(R.id.ed_faculty_address);
-        facultyUsername = (EditText) findViewById(R.id.ed_faculty_uname);
-        facultyPassword = (EditText) findViewById(R.id.edt_faculty_pass);
-        saveFacultyBtn = (Button) findViewById(R.id.save_faculty_btn);
+        facultyFirstName = findViewById(R.id.ed_faculty_fName);
+        facultyLastName = findViewById(R.id.ed_faculty_lName);
+        facultyPhone = findViewById(R.id.ed_faculty_phone);
+        facultyAddress = findViewById(R.id.ed_faculty_address);
+        facultyUsername = findViewById(R.id.ed_faculty_uname);
+        facultyPassword = findViewById(R.id.edt_faculty_pass);
+        saveFacultyBtn = findViewById(R.id.save_faculty_btn);
 
         saveFacultyBtn.setOnClickListener(v -> {
 
@@ -68,8 +68,8 @@ public class AddFacultyActivity extends AppCompatActivity {
                 facultyBean.setFaculty_username(userName);
                 facultyBean.setFaculty_password(passWord);
 
-                DBAdapter dbAdapter = new DBAdapter(AddFacultyActivity.this);
-                dbAdapter.addFaculty(facultyBean);
+                DBHandler dbHandler = new DBHandler(AddFacultyActivity.this);
+                dbHandler.addFaculty(facultyBean);
 
                 Intent intent = new Intent(AddFacultyActivity.this, DashboardActivity.class);
                 startActivity(intent);

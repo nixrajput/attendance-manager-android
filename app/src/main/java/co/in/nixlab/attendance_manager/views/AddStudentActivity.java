@@ -14,7 +14,7 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import co.in.nixlab.attendance_manager.R;
-import co.in.nixlab.attendance_manager.controllers.DBAdapter;
+import co.in.nixlab.attendance_manager.controllers.DBHandler;
 import co.in.nixlab.attendance_manager.models.Student;
 
 public class AddStudentActivity extends AppCompatActivity {
@@ -101,11 +101,11 @@ public class AddStudentActivity extends AppCompatActivity {
                 studentBean.setStudent_lastname(last_name);
                 studentBean.setStudent_mobile_number(phone_no);
                 studentBean.setStudent_address(address);
-                studentBean.setStudent_department(branch);
-                studentBean.setStudent_class(semester);
+                studentBean.setStudent_branch(branch);
+                studentBean.setStudent_sem(semester);
 
-                DBAdapter dbAdapter = new DBAdapter(AddStudentActivity.this);
-                dbAdapter.addStudent(studentBean);
+                DBHandler dbHandler = new DBHandler(AddStudentActivity.this);
+                dbHandler.addStudent(studentBean);
 
                 Intent intent = new Intent(AddStudentActivity.this, DashboardActivity.class);
                 startActivity(intent);

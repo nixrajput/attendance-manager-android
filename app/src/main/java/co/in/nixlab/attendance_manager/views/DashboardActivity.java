@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 import co.in.nixlab.attendance_manager.R;
-import co.in.nixlab.attendance_manager.context.ApplicationContext;
-import co.in.nixlab.attendance_manager.controllers.DBAdapter;
+import co.in.nixlab.attendance_manager.context.AppContext;
+import co.in.nixlab.attendance_manager.controllers.DBHandler;
 import co.in.nixlab.attendance_manager.models.Attendance;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -63,11 +63,12 @@ public class DashboardActivity extends AppCompatActivity {
 
         attendancePerStudent.setOnClickListener(v -> {
 
-            DBAdapter dbAdapter = new DBAdapter(DashboardActivity.this);
-            ArrayList<Attendance> attendanceBeanList = dbAdapter.getAllAttendanceByStudent();
-            ((ApplicationContext) DashboardActivity.this.getApplicationContext()).setAttendanceList(attendanceBeanList);
+            DBHandler dbHandler = new DBHandler(DashboardActivity.this);
+            ArrayList<Attendance> attendanceBeanList = dbHandler.getAllAttendanceByStudent();
+            ((AppContext) this.getApplicationContext()).setAttendanceList(attendanceBeanList);
 
-            Intent intent = new Intent(DashboardActivity.this, ViewAttendancePerStudentActivity.class);
+            Intent intent = new Intent(DashboardActivity.this,
+                    ViewAttendancePerStudentActivity.class);
             startActivity(intent);
 
         });

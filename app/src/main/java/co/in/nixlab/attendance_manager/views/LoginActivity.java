@@ -10,14 +10,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import co.in.nixlab.attendance_manager.R;
-import co.in.nixlab.attendance_manager.context.ApplicationContext;
-import co.in.nixlab.attendance_manager.controllers.DBAdapter;
+import co.in.nixlab.attendance_manager.context.AppContext;
+import co.in.nixlab.attendance_manager.controllers.DBHandler;
 import co.in.nixlab.attendance_manager.models.Faculty;
 
 public class LoginActivity extends AppCompatActivity {
@@ -33,10 +34,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_user);
-        login = (Button) findViewById(R.id.login_btn);
-        username = (EditText) findViewById(R.id.edt_uname);
-        password = (EditText) findViewById(R.id.edt_pass);
-        spinnerLoginAs = (Spinner) findViewById(R.id.spinnerLoginAs);
+
+        login = findViewById(R.id.login_btn);
+        username = findViewById(R.id.edt_uname);
+        password = findViewById(R.id.edt_pass);
+        spinnerLoginAs = findViewById(R.id.spinnerLoginAs);
         contextView = findViewById(android.R.id.content).getRootView();
 
         spinnerLoginAs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -82,16 +84,19 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(pass_word)) {
                     password.setError("Enter password");
                 }
-                DBAdapter dbAdapter = new DBAdapter(LoginActivity.this);
-                Faculty faculty = dbAdapter.validateFaculty(user_name, pass_word);
+                DBHandler dbHandler = new DBHandler(LoginActivity.this);
+                Faculty faculty = dbHandler.validateFaculty(user_name, pass_word);
 
                 if (faculty != null) {
-                    Intent intent = new Intent(LoginActivity.this, AddAttendanceSessionActivity.class);
+                    Intent intent = new Intent(LoginActivity.this,
+                            AddAttendanceSessionActivity.class);
                     startActivity(intent);
-                    ((ApplicationContext) LoginActivity.this.getApplicationContext()).setFaculty(faculty);
-                    Snackbar.make(contextView, "Login successful", Snackbar.LENGTH_LONG).show();
+                    ((AppContext) this.getApplicationContext()).setFaculty(faculty);
+                    Toast.makeText(getApplicationContext(),
+                            "Login successful", Toast.LENGTH_LONG).show();
                 } else {
-                    Snackbar.make(contextView, "Login failed", Snackbar.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Login failed", Toast.LENGTH_LONG).show();
                 }
             }
         });

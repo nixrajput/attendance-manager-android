@@ -7,8 +7,8 @@ public class Student {
     private String student_lastname;
     private String student_mobile_number;
     private String student_address;
-    private String student_department;
-    private String student_class;
+    private String student_branch;
+    private String student_sem;
 
     public int getStudent_id() {
         return student_id;
@@ -50,20 +50,20 @@ public class Student {
         this.student_address = student_address;
     }
 
-    public String getStudent_department() {
-        return student_department;
+    public String getStudent_branch() {
+        return student_branch;
     }
 
-    public void setStudent_department(String student_department) {
-        this.student_department = student_department;
+    public void setStudent_branch(String student_branch) {
+        this.student_branch = student_branch;
     }
 
-    public String getStudent_class() {
-        return student_class;
+    public String getStudent_sem() {
+        return student_sem;
     }
 
-    public void setStudent_class(String student_class) {
-        this.student_class = student_class;
+    public void setStudent_sem(String student_sem) {
+        this.student_sem = student_sem;
     }
 
 

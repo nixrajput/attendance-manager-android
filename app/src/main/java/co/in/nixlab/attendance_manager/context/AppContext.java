@@ -9,7 +9,7 @@ import co.in.nixlab.attendance_manager.models.AttendanceSession;
 import co.in.nixlab.attendance_manager.models.Faculty;
 import co.in.nixlab.attendance_manager.models.Student;
 
-public class ApplicationContext extends Application {
+public class AppContext extends Application {
     private Faculty faculty;
     private AttendanceSession attendanceSession;
     private ArrayList<Student> studentList;

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.AddFacultyActivity">
+    tools:context=".views.AddAttendanceSessionActivity">
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -13,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:text="@string/ADD_FACULTY"
+        android:text="@string/ATTENDANCE"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +110,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/buttonsubmit"
+            android:id="@+id/add_attendance_btn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="24dp"
@@ -119,14 +118,14 @@
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/viewTotalAttendanceButton"
+            android:id="@+id/view_total_attendance_btn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="@string/VIEW_TOTAL_ATTENDANCE"
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/viewAttendancebutton"
+            android:id="@+id/view_attendance_btn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginBottom="8dp"

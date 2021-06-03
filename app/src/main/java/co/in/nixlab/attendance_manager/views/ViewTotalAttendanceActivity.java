@@ -4,44 +4,68 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import co.in.nixlab.attendance_manager.R;
 import co.in.nixlab.attendance_manager.context.AppContext;
+import co.in.nixlab.attendance_manager.controllers.AttendanceAdapter;
 import co.in.nixlab.attendance_manager.controllers.DBHandler;
+import co.in.nixlab.attendance_manager.controllers.StudentAdapter;
 import co.in.nixlab.attendance_manager.models.Attendance;
 import co.in.nixlab.attendance_manager.models.Student;
 
-public class ViewAttendancePerStudentActivity extends AppCompatActivity {
+public class ViewTotalAttendanceActivity extends AppCompatActivity {
 
-    ArrayList<Attendance> attendanceBeanList;
+    ArrayList<Attendance> attendanceList;
+
+    DBHandler dbHandler = new DBHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_listview);
+        setContentView(R.layout.main_recycler_view);
 
-        ListView listView = findViewById(R.id.listview);
-        final ArrayList<String> attendanceList = new ArrayList<>();
-        attendanceList.add("Present Count Per Student");
-        attendanceBeanList = ((AppContext) ViewAttendancePerStudentActivity.this.getApplicationContext()).getAttendanceList();
+        TextView titleTextView = findViewById(R.id.textView_title);
+        titleTextView.setText("Total Attendance");
+        RecyclerView recyclerView = findViewById(R.id.main_recycler_view);
+        this.attendanceList = ((AppContext) ViewTotalAttendanceActivity.this
+                .getApplicationContext()).getAttendanceList();
 
-        for (Attendance attendanceBean : attendanceBeanList) {
-            String users;
+        AttendanceAdapter adapter = new AttendanceAdapter(attendanceList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            DBHandler dbHandler = new DBHandler(ViewAttendancePerStudentActivity.this);
-            Student studentBean = dbHandler.getStudentById(attendanceBean.getAttendance_student_id());
-            users = attendanceBean.getAttendance_student_id() + ".     " +
-                    studentBean.getStudent_firstname() + " " + studentBean.getStudent_lastname() +
-                    "                  " + attendanceBean.getAttendance_session_id();
-            attendanceList.add(users);
-        }
-
-        ArrayAdapter<String> listAdapter = new ArrayAdapter<>(this, R.layout.view_attendance_list_per_student, R.id.labelAttendancePerStudent, attendanceList);
-        listView.setAdapter(listAdapter);
+//        ListView listView = findViewById(R.id.listview);
+//        final ArrayList<String> attendanceList = new ArrayList<>();
+//        attendanceList.add("Id | Student Name |  Status");
+//
+//        this.attendanceList = ((AppContext) this.getApplicationContext()).getAttendanceList();
+//
+//        for (Attendance attendance : this.attendanceList) {
+//            String users;
+//            if (attendance.getAttendance_session_id() != 0) {
+//                DBHandler dbHandler = new DBHandler(ViewTotalAttendanceActivity.this);
+//                Student student = dbHandler.getStudentById(attendance.getAttendance_student_id());
+//                users = attendance.getAttendance_student_id() + ".     " +
+//                        student.getStudent_firstname() + " " +
+//                        student.getStudent_lastname() + "              " +
+//                        attendance.getAttendance_status();
+//            } else {
+//                users = attendance.getAttendance_status();
+//            }
+//
+//            attendanceList.add(users);
+//
+//        }
+//
+//        ArrayAdapter<String> listAdapter = new ArrayAdapter<>(this, R.layout.view_attendance_list, R.id.labelAttendance, attendanceList);
+//        listView.setAdapter(listAdapter);
 
 		/*listView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
@@ -101,6 +125,7 @@ public class ViewAttendancePerStudentActivity extends AppCompatActivity {
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

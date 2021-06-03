@@ -4,8 +4,8 @@ public class AttendanceSession {
 
     private int attendance_session_id;
     private int attendance_session_faculty_id;
-    private String attendance_session_department;
-    private String attendance_session_class;
+    private String attendance_session_branch;
+    private String attendance_session_sem;
     private String attendance_session_date;
     private String attendance_session_subject;
 
@@ -25,21 +25,21 @@ public class AttendanceSession {
         this.attendance_session_faculty_id = attendance_session_faculty_id;
     }
 
-    public String getAttendance_session_department() {
-        return attendance_session_department;
+    public String getAttendance_session_branch() {
+        return attendance_session_branch;
     }
 
-    public void setAttendance_session_department(
-            String attendance_session_department) {
-        this.attendance_session_department = attendance_session_department;
+    public void setAttendance_session_branch(
+            String attendance_session_branch) {
+        this.attendance_session_branch = attendance_session_branch;
     }
 
-    public String getAttendance_session_class() {
-        return attendance_session_class;
+    public String getAttendance_session_sem() {
+        return attendance_session_sem;
     }
 
-    public void setAttendance_session_class(String attendance_session_class) {
-        this.attendance_session_class = attendance_session_class;
+    public void setAttendance_session_sem(String attendance_session_sem) {
+        this.attendance_session_sem = attendance_session_sem;
     }
 
     public String getAttendance_session_date() {

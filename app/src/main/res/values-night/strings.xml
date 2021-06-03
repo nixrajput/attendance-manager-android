@@ -47,4 +47,7 @@
     <string name="CALENDAR_BUTTON">Calender Button</string>
     <string name="VIEW_TOTAL_ATTENDANCE">View Total Attendance</string>
     <string name="VIEW_ATTENDANCE">View Attendance</string>
+    <string name="ABSENT">A</string>
+    <string name="PRESENT">P</string>
+    <string name="ATTENDANCE">Attendance</string>
 </resources>

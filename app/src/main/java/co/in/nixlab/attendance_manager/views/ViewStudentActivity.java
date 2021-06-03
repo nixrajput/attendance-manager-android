@@ -25,11 +25,11 @@ public class ViewStudentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.viewstudent);
+        setContentView(R.layout.view_student);
 
-        spinnerBranch = (Spinner) findViewById(R.id.spinner_branch);
-        spinnerSem = (Spinner) findViewById(R.id.spinner_sem);
-        nextBtn = (Button) findViewById(R.id.next_btn);
+        spinnerBranch = findViewById(R.id.spinner_branch);
+        spinnerSem = findViewById(R.id.spinner_sem);
+        nextBtn = findViewById(R.id.next_btn);
 
         spinnerBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -68,7 +68,8 @@ public class ViewStudentActivity extends AppCompatActivity {
         spinnerSem.setAdapter(adapter_year);
 
         nextBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(ViewStudentActivity.this, ViewStudentByBranchSemActivity.class);
+            Intent intent = new Intent(ViewStudentActivity.this,
+                    ViewStudentByBranchSemActivity.class);
             intent.putExtra("branch", branch);
             intent.putExtra("sem", semester);
             startActivity(intent);
