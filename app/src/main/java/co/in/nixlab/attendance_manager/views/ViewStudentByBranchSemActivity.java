@@ -33,7 +33,7 @@ public class ViewStudentByBranchSemActivity extends AppCompatActivity {
         semester = getIntent().getExtras().getString("sem");
 
         TextView titleTextView = findViewById(R.id.textView_title);
-        titleTextView.setText("Student List");
+        titleTextView.setText(R.string.STUDENT_LIST);
         RecyclerView recyclerView = findViewById(R.id.main_recycler_view);
         this.studentList = dbHandler.getAllStudentByBranchSem(branch, semester);
 

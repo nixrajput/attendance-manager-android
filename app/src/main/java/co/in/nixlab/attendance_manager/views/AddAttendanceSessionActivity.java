@@ -2,6 +2,7 @@ package co.in.nixlab.attendance_manager.views;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -34,6 +35,7 @@ public class AddAttendanceSessionActivity extends AppCompatActivity {
     Button addAttendanceBtn;
     Button viewAttendance;
     Button viewTotalAttendance;
+    Button facultyLogoutBtn;
     Spinner spinnerBranch, spinnerSem, spinnerSubject;
     String branch = "CSE";
     String semester = "1st";
@@ -198,6 +200,19 @@ public class AddAttendanceSessionActivity extends AppCompatActivity {
                     ViewTotalAttendanceActivity.class);
             startActivity(intent);
 
+        });
+
+        facultyLogoutBtn = findViewById(R.id.faculty_logout_btn);
+        facultyLogoutBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(AddAttendanceSessionActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            SharedPreferences prefs = getSharedPreferences("my-prefs", MODE_PRIVATE);
+            SharedPreferences.Editor prefsEdit = prefs.edit();
+            prefsEdit.clear();
+            prefsEdit.apply();
+            Toast.makeText(getApplicationContext(), "Logged out successfully.",
+                    Toast.LENGTH_LONG).show();
+            startActivity(intent);
         });
     }
 }

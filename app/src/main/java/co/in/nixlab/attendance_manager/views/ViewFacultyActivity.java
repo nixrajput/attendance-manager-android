@@ -27,7 +27,7 @@ public class ViewFacultyActivity extends AppCompatActivity {
         setContentView(R.layout.recycler_view_layout);
 
         TextView titleTextView = findViewById(R.id.textView_title);
-        titleTextView.setText("Faculty List");
+        titleTextView.setText(R.string.FACULTY_LIST);
         RecyclerView recyclerView = findViewById(R.id.main_recycler_view);
         this.facultyBeanList = dbHandler.getAllFaculty();
 

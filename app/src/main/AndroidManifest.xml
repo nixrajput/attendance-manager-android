@@ -12,13 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AttendanceManager">
+        <activity android:name=".views.ViewFacultyDetailsActivity"></activity>
+        <activity android:name=".views.ViewStudentDetailsActivity" />
         <activity android:name=".views.LoginActivity" />
         <activity android:name=".views.ViewStudentByBranchSemActivity" />
-        <activity android:name=".views.ViewStudentActivity" />
+        <activity android:name=".views.SearchStudentActivity" />
         <activity android:name=".views.ViewFacultyActivity" />
         <activity android:name=".views.AddStudentActivity" />
         <activity android:name=".views.ViewAttendancePerStudentActivity" />
-        <activity android:name=".views.DashboardActivity" />
+        <activity android:name=".views.AdminDashboardActivity" />
         <activity android:name=".views.AddFacultyActivity" />
         <activity android:name=".views.ViewTotalAttendanceActivity" />
         <activity android:name=".views.AddAttendanceActivity" />

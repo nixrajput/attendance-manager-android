@@ -176,8 +176,30 @@ public class DBHandler extends SQLiteOpenHelper {
     public Faculty validateFaculty(String userName, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM faculty_table where faculty_username='" + userName +
+        String query = "SELECT * FROM faculty_table WHERE faculty_username='" + userName +
                 "' and faculty_password='" + password + "'";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            Faculty faculty = new Faculty();
+            faculty.setFaculty_id(Integer.parseInt(cursor.getString(0)));
+            faculty.setFaculty_firstname(cursor.getString(1));
+            faculty.setFaculty_lastname(cursor.getString(2));
+            faculty.setFaculty_mobile_number(cursor.getString(3));
+            faculty.setFaculty_address(cursor.getString(4));
+            faculty.setFaculty_username(cursor.getString(5));
+            faculty.setFaculty_password(cursor.getString(6));
+            return faculty;
+        }
+        cursor.close();
+        db.close();
+        return null;
+    }
+
+    public Faculty getFacultyById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM faculty_table WHERE faculty_id='" + id + "'";
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {

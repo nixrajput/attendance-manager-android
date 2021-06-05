@@ -1,6 +1,7 @@
 package co.in.nixlab.attendance_manager.views;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -14,8 +15,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import co.in.nixlab.attendance_manager.R;
 import co.in.nixlab.attendance_manager.context.AppContext;
 import co.in.nixlab.attendance_manager.controllers.DBHandler;
@@ -28,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText username, password;
     Spinner spinnerLoginAs;
     String userRole;
-    View contextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
         username = findViewById(R.id.edt_uname);
         password = findViewById(R.id.edt_pass);
         spinnerLoginAs = findViewById(R.id.spinnerLoginAs);
-        contextView = findViewById(android.R.id.content).getRootView();
 
         spinnerLoginAs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -65,22 +62,29 @@ public class LoginActivity extends AppCompatActivity {
             if (userRole.equals("ADMIN")) {
 
                 if (TextUtils.isEmpty(user_name)) {
-                    username.setError("Invalid Username");
+                    username.setError("Enter Username");
                 } else if (TextUtils.isEmpty(pass_word)) {
                     password.setError("Enter password");
                 } else {
                     if (user_name.equals("admin") & pass_word.equals("pass")) {
-                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        SharedPreferences prefs = getSharedPreferences("my-prefs", MODE_PRIVATE);
+                        SharedPreferences.Editor prefsEdit = prefs.edit();
+                        prefsEdit.putBoolean("logged_in", true);
+                        prefsEdit.putString("user_role", userRole);
+                        prefsEdit.apply();
+                        Intent intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
                         startActivity(intent);
-                        Snackbar.make(contextView, "Login successful", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Login successful.",
+                                Toast.LENGTH_LONG).show();
                     } else {
-                        Snackbar.make(contextView, "Login failed", Snackbar.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Login failed",
+                                Toast.LENGTH_LONG).show();
                     }
                 }
             } else {
 
                 if (TextUtils.isEmpty(user_name)) {
-                    username.setError("Invalid Username");
+                    username.setError("Enter Username");
                 } else if (TextUtils.isEmpty(pass_word)) {
                     password.setError("Enter password");
                 }
@@ -88,6 +92,12 @@ public class LoginActivity extends AppCompatActivity {
                 Faculty faculty = dbHandler.validateFaculty(user_name, pass_word);
 
                 if (faculty != null) {
+                    SharedPreferences prefs = getSharedPreferences("my-prefs", MODE_PRIVATE);
+                    SharedPreferences.Editor prefsEdit = prefs.edit();
+                    prefsEdit.putBoolean("logged_in", true);
+                    prefsEdit.putString("user_role", userRole);
+                    prefsEdit.putInt("faculty_id", faculty.getFaculty_id());
+                    prefsEdit.apply();
                     Intent intent = new Intent(LoginActivity.this,
                             AddAttendanceSessionActivity.class);
                     startActivity(intent);
@@ -100,8 +110,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     @Override

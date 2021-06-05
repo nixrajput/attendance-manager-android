@@ -128,8 +128,15 @@
             android:id="@+id/view_attendance_btn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginBottom="8dp"
             android:text="@string/VIEW_ATTENDANCE"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/faculty_logout_btn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/LOGOUT"
             android:textColor="@color/white" />
 
     </LinearLayout>

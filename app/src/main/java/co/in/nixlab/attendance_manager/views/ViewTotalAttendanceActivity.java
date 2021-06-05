@@ -28,7 +28,7 @@ public class ViewTotalAttendanceActivity extends AppCompatActivity {
         setContentView(R.layout.recycler_view_layout);
 
         TextView titleTextView = findViewById(R.id.textView_title);
-        titleTextView.setText("Total Attendance");
+        titleTextView.setText(R.string.ATTENDANCE_LIST);
         RecyclerView recyclerView = findViewById(R.id.main_recycler_view);
         this.attendanceList = ((AppContext) ViewTotalAttendanceActivity.this
                 .getApplicationContext()).getAttendanceList();

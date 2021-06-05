@@ -50,4 +50,8 @@
     <string name="PRESENT">P</string>
     <string name="ATTENDANCE">Attendance</string>
     <string name="ROLL_NO">Roll No.</string>
+    <string name="ATTENDANCE_LIST">Attendance List</string>
+    <string name="STUDENT_LIST">Student List</string>
+    <string name="FACULTY_LIST">Faculty List</string>
+    <string name="ATTENDANCE_REPORT">Attendance Report</string>
 </resources>

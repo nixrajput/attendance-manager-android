@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import co.in.nixlab.attendance_manager.R;
 
-public class ViewStudentActivity extends AppCompatActivity {
+public class SearchStudentActivity extends AppCompatActivity {
 
     private final String[] branchString = new String[]{"CSE", "ME", "EE", "CE", "ECE"};
     private final String[] SemString = new String[]{"1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"};
@@ -25,7 +25,7 @@ public class ViewStudentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_student);
+        setContentView(R.layout.search_student);
 
         spinnerBranch = findViewById(R.id.spinner_stu_branch);
         spinnerSem = findViewById(R.id.spinner_stu_sem);
@@ -68,7 +68,7 @@ public class ViewStudentActivity extends AppCompatActivity {
         spinnerSem.setAdapter(adapter_year);
 
         nextBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(ViewStudentActivity.this,
+            Intent intent = new Intent(SearchStudentActivity.this,
                     ViewStudentByBranchSemActivity.class);
             intent.putExtra("branch", branch);
             intent.putExtra("sem", semester);

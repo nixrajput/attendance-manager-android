@@ -72,7 +72,7 @@ public class AddFacultyActivity extends AppCompatActivity {
 
                 try {
                     dbHandler.addFaculty(facultyBean);
-                    Intent intent = new Intent(AddFacultyActivity.this, DashboardActivity.class);
+                    Intent intent = new Intent(AddFacultyActivity.this, AdminDashboardActivity.class);
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), "Faculty added successfully", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {

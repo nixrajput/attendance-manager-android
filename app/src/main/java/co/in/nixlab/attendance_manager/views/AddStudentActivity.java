@@ -39,14 +39,14 @@ public class AddStudentActivity extends AppCompatActivity {
         setContentView(R.layout.add_student);
 
         contextView = findViewById(android.R.id.content).getRootView();
-        spinnerBranch = (Spinner) findViewById(R.id.spinner_stu_branch);
-        spinnerSem = (Spinner) findViewById(R.id.spinner_stu_sem);
+        spinnerBranch = findViewById(R.id.spinner_stu_branch);
+        spinnerSem = findViewById(R.id.spinner_stu_sem);
         studentRoll = findViewById(R.id.ed_stu_roll_no);
-        studentFirstName = (EditText) findViewById(R.id.ed_stu_first_name);
-        studentLastName = (EditText) findViewById(R.id.ed_stu_last_name);
-        studentPhone = (EditText) findViewById(R.id.ed_stu_mob_no);
-        studentAddress = (EditText) findViewById(R.id.ed_stu_address);
-        saveBtn = (Button) findViewById(R.id.save_student_btn);
+        studentFirstName = findViewById(R.id.ed_stu_first_name);
+        studentLastName = findViewById(R.id.ed_stu_last_name);
+        studentPhone = findViewById(R.id.ed_stu_mob_no);
+        studentAddress = findViewById(R.id.ed_stu_address);
+        saveBtn = findViewById(R.id.save_student_btn);
 
         spinnerBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -115,7 +115,7 @@ public class AddStudentActivity extends AppCompatActivity {
 
                 try {
                     dbHandler.addStudent(student);
-                    Intent intent = new Intent(AddStudentActivity.this, DashboardActivity.class);
+                    Intent intent = new Intent(AddStudentActivity.this, AdminDashboardActivity.class);
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(), "Student added successfully",
                             Toast.LENGTH_LONG).show();

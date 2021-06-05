@@ -2,18 +2,18 @@ package co.in.nixlab.attendance_manager.views;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import co.in.nixlab.attendance_manager.R;
 import co.in.nixlab.attendance_manager.context.AppContext;
-import co.in.nixlab.attendance_manager.controllers.DBHandler;
+import co.in.nixlab.attendance_manager.controllers.AttendanceCountAdapter;
 import co.in.nixlab.attendance_manager.models.Attendance;
-import co.in.nixlab.attendance_manager.models.Student;
 
 public class ViewAttendancePerStudentActivity extends AppCompatActivity {
 
@@ -22,26 +22,18 @@ public class ViewAttendancePerStudentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_listview);
 
-        ListView listView = findViewById(R.id.listview);
-        final ArrayList<String> attendanceList = new ArrayList<>();
-        attendanceList.add("Present Count Per Student");
+        setContentView(R.layout.recycler_view_layout);
+
+        TextView titleTextView = findViewById(R.id.textView_title);
+        titleTextView.setText(R.string.ATTENDANCE_REPORT);
+        RecyclerView recyclerView = findViewById(R.id.main_recycler_view);
+
         attendanceBeanList = ((AppContext) this.getApplicationContext()).getAttendanceList();
 
-        for (Attendance attendanceBean : attendanceBeanList) {
-            String users;
-
-            DBHandler dbHandler = new DBHandler(ViewAttendancePerStudentActivity.this);
-            Student studentBean = dbHandler.getStudentByRollNo(attendanceBean.getAttendance_student_roll());
-            users = attendanceBean.getAttendance_student_roll() + ".     " +
-                    studentBean.getStudent_firstname() + " " + studentBean.getStudent_lastname() +
-                    "                  " + attendanceBean.getAttendance_session_id();
-            attendanceList.add(users);
-        }
-
-        ArrayAdapter<String> listAdapter = new ArrayAdapter<>(this, R.layout.view_attendance_list_per_student, R.id.labelAttendancePerStudent, attendanceList);
-        listView.setAdapter(listAdapter);
+        AttendanceCountAdapter adapter = new AttendanceCountAdapter(attendanceBeanList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
