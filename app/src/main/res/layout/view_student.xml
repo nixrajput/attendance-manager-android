@@ -47,7 +47,7 @@
             android:textSize="18sp" />
 
         <Spinner
-            android:id="@+id/spinner_branch"
+            android:id="@+id/spinner_stu_branch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -62,7 +62,7 @@
             android:textSize="18sp" />
 
         <Spinner
-            android:id="@+id/spinner_sem"
+            android:id="@+id/spinner_stu_sem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp" />

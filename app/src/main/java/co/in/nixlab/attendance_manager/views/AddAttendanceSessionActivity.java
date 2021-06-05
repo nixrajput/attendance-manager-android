@@ -3,6 +3,7 @@ package co.in.nixlab.attendance_manager.views;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,8 +49,8 @@ public class AddAttendanceSessionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_attendance);
 
-        spinnerBranch = findViewById(R.id.spinner_branch);
-        spinnerSem = findViewById(R.id.spinner_sem);
+        spinnerBranch = findViewById(R.id.spinner_stu_branch);
+        spinnerSem = findViewById(R.id.spinner_stu_sem);
         spinnerSubject = findViewById(R.id.spinner_sub);
 
         ArrayAdapter<String> adapter_branch = new ArrayAdapter<>(this,
@@ -120,26 +122,34 @@ public class AddAttendanceSessionActivity extends AppCompatActivity {
         addAttendanceBtn = findViewById(R.id.add_attendance_btn);
         addAttendanceBtn.setOnClickListener(arg0 -> {
 
-            AttendanceSession attendanceSession = new AttendanceSession();
-            Faculty faculty = ((AppContext) this.getApplicationContext()).getFaculty();
+            String dateText = dateEditText.getText().toString();
 
-            attendanceSession.setAttendance_session_faculty_id(faculty.getFaculty_id());
-            attendanceSession.setAttendance_session_branch(branch);
-            attendanceSession.setAttendance_session_sem(semester);
-            attendanceSession.setAttendance_session_date(dateEditText.getText().toString());
-            attendanceSession.setAttendance_session_subject(subject);
+            if (TextUtils.isEmpty(dateText)) {
+                dateEditText.setError("Select a date");
+                Toast.makeText(getApplicationContext(), "Select a date.",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                AttendanceSession attendanceSession = new AttendanceSession();
+                Faculty faculty = ((AppContext) this.getApplicationContext()).getFaculty();
 
-            DBHandler dbHandler = new DBHandler(AddAttendanceSessionActivity.this);
-            int sessionId = dbHandler.addAttendanceSession(attendanceSession);
+                attendanceSession.setAttendance_session_faculty_id(faculty.getFaculty_id());
+                attendanceSession.setAttendance_session_branch(branch);
+                attendanceSession.setAttendance_session_sem(semester);
+                attendanceSession.setAttendance_session_date(dateEditText.getText().toString());
+                attendanceSession.setAttendance_session_subject(subject);
 
-            ArrayList<Student> studentList = dbHandler
-                    .getAllStudentByBranchSem(branch, semester);
-            ((AppContext) this.getApplicationContext()).setStudentList(studentList);
+                DBHandler dbHandler = new DBHandler(AddAttendanceSessionActivity.this);
+                int sessionId = dbHandler.addAttendanceSession(attendanceSession);
 
-            Intent intent = new Intent(AddAttendanceSessionActivity.this,
-                    AddAttendanceActivity.class);
-            intent.putExtra("sessionId", sessionId);
-            startActivity(intent);
+                ArrayList<Student> studentList = dbHandler
+                        .getAllStudentByBranchSem(branch, semester);
+                ((AppContext) this.getApplicationContext()).setStudentList(studentList);
+
+                Intent intent = new Intent(AddAttendanceSessionActivity.this,
+                        AddAttendanceActivity.class);
+                intent.putExtra("sessionId", sessionId);
+                startActivity(intent);
+            }
         });
 
         viewTotalAttendance = findViewById(R.id.view_total_attendance_btn);

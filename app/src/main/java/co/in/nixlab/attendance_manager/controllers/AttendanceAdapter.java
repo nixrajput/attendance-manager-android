@@ -18,26 +18,12 @@ import co.in.nixlab.attendance_manager.models.Attendance;
 import co.in.nixlab.attendance_manager.models.Student;
 
 public class AttendanceAdapter extends RecyclerView.Adapter
-<AttendanceAdapter.ViewHolder>{
+        <AttendanceAdapter.ViewHolder> {
 
     private final ArrayList<Attendance> attendanceList;
 
     public AttendanceAdapter(ArrayList<Attendance> attendanceList) {
         this.attendanceList = attendanceList;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView rollTextView;
-        public TextView nameTextView;
-        public TextView statusTextView;
-
-        public ViewHolder(@NonNull @NotNull View itemView) {
-            super(itemView);
-
-            rollTextView = itemView.findViewById(R.id.label_roll);
-            nameTextView = itemView.findViewById(R.id.label_student_name);
-            statusTextView = itemView.findViewById(R.id.label_status);
-        }
     }
 
     @NonNull
@@ -60,24 +46,35 @@ public class AttendanceAdapter extends RecyclerView.Adapter
         TextView stu_name = holder.nameTextView;
         TextView status = holder.statusTextView;
 
-        if(attendance.getAttendance_session_id() != 0) {
+        if (attendance.getAttendance_session_id() != 0) {
             DBHandler dbHandler = new DBHandler(holder.itemView.getContext());
-            Student student = dbHandler.getStudentById(attendance.getAttendance_student_id());
+            Student student = dbHandler.getStudentByRollNo(attendance.getAttendance_student_roll());
             String name = student.getStudent_firstname() + " " + student.getStudent_lastname();
 
-            roll_no.setText(String.valueOf(attendance.getAttendance_student_id()));
+            roll_no.setText(attendance.getAttendance_student_roll());
             stu_name.setText(name);
-        }
-        else {
-            roll_no.setText(attendance.getAttendance_status());
+            status.setText(attendance.getAttendance_status());
+        } else {
             stu_name.setText(attendance.getAttendance_status());
         }
-        status.setText(attendance.getAttendance_status());
-
     }
 
     @Override
     public int getItemCount() {
         return attendanceList.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView rollTextView;
+        public TextView nameTextView;
+        public TextView statusTextView;
+
+        public ViewHolder(@NonNull @NotNull View itemView) {
+            super(itemView);
+
+            rollTextView = itemView.findViewById(R.id.label_roll);
+            nameTextView = itemView.findViewById(R.id.label_student_name);
+            statusTextView = itemView.findViewById(R.id.label_status);
+        }
     }
 }

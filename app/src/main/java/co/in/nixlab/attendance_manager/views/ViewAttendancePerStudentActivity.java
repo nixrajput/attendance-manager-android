@@ -27,14 +27,14 @@ public class ViewAttendancePerStudentActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.listview);
         final ArrayList<String> attendanceList = new ArrayList<>();
         attendanceList.add("Present Count Per Student");
-        attendanceBeanList = ((AppContext) ViewAttendancePerStudentActivity.this.getApplicationContext()).getAttendanceList();
+        attendanceBeanList = ((AppContext) this.getApplicationContext()).getAttendanceList();
 
         for (Attendance attendanceBean : attendanceBeanList) {
             String users;
 
             DBHandler dbHandler = new DBHandler(ViewAttendancePerStudentActivity.this);
-            Student studentBean = dbHandler.getStudentById(attendanceBean.getAttendance_student_id());
-            users = attendanceBean.getAttendance_student_id() + ".     " +
+            Student studentBean = dbHandler.getStudentByRollNo(attendanceBean.getAttendance_student_roll());
+            users = attendanceBean.getAttendance_student_roll() + ".     " +
                     studentBean.getStudent_firstname() + " " + studentBean.getStudent_lastname() +
                     "                  " + attendanceBean.getAttendance_session_id();
             attendanceList.add(users);
@@ -42,63 +42,6 @@ public class ViewAttendancePerStudentActivity extends AppCompatActivity {
 
         ArrayAdapter<String> listAdapter = new ArrayAdapter<>(this, R.layout.view_attendance_list_per_student, R.id.labelAttendancePerStudent, attendanceList);
         listView.setAdapter(listAdapter);
-
-		/*listView.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-					final int position, long arg3) {
-
-
-
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ViewAttendanceByFacultyActivity.this);
-
-				alertDialogBuilder.setTitle(getTitle()+"decision");
-				alertDialogBuilder.setMessage("Are you sure?");
-
-				alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,int id) {
-
-						facultyList.remove(position);
-						listAdapter.notifyDataSetChanged();
-						listAdapter.notifyDataSetInvalidated();
-
-						dbAdapter.deleteFaculty(facultyBeanList.get(position).getFaculty_id());
-						facultyBeanList=dbAdapter.getAllFaculty();
-
-						for(FacultyBean facultyBean : facultyBeanList)
-						{
-							String users = " FirstName: " + facultyBean.getFaculty_firstname()+"\nLastname:"+facultyBean.getFaculty_lastname();
-							facultyList.add(users);
-							Log.d("users: ", users);
-
-						}
-
-					}
-
-				});
-				alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,int id) {
-						// cancel the alert box and put a Toast to the user
-						dialog.cancel();
-						Toast.makeText(getApplicationContext(), "You choose cancel",
-								Toast.LENGTH_LONG).show();
-					}
-				});
-
-				AlertDialog alertDialog = alertDialogBuilder.create();
-				// show alert
-				alertDialog.show();
-
-
-
-
-
-				return false;
-			}
-		});
-*/
-
 
     }
 

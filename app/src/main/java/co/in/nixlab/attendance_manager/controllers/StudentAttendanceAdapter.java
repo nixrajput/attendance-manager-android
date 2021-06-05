@@ -21,27 +21,15 @@ import co.in.nixlab.attendance_manager.R;
 import co.in.nixlab.attendance_manager.models.Attendance;
 import co.in.nixlab.attendance_manager.models.Student;
 
-public class StudentAdapter extends RecyclerView.Adapter
-<StudentAdapter.ViewHolder>{
+public class StudentAttendanceAdapter extends RecyclerView.Adapter
+        <StudentAttendanceAdapter.ViewHolder> {
 
     private final List<Student> studentList;
     private final int sessionId;
 
-    public StudentAdapter(List<Student> studentList, int sessionId) {
+    public StudentAttendanceAdapter(List<Student> studentList, int sessionId) {
         this.studentList = studentList;
         this.sessionId = sessionId;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView nameTextView;
-        public Spinner attendanceSpinner;
-
-        public ViewHolder(@NonNull @NotNull View itemView) {
-            super(itemView);
-
-            nameTextView = itemView.findViewById(R.id.label_student);
-            attendanceSpinner = itemView.findViewById(R.id.spinner_attendance);
-        }
     }
 
     @NonNull
@@ -57,7 +45,7 @@ public class StudentAdapter extends RecyclerView.Adapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull StudentAdapter.ViewHolder holder,
+    public void onBindViewHolder(@NonNull @NotNull StudentAttendanceAdapter.ViewHolder holder,
                                  int position) {
         Student student = studentList.get(position);
         final String[] attendanceStrings = new String[]{"P", "A"};
@@ -73,7 +61,7 @@ public class StudentAdapter extends RecyclerView.Adapter
                 Attendance attendance = new Attendance();
 
                 attendance.setAttendance_session_id(sessionId);
-                attendance.setAttendance_student_id(student.getStudent_id());
+                attendance.setAttendance_student_roll(student.getStudent_roll());
                 attendance.setAttendance_status(attendanceSpinner.getSelectedItem().toString());
 
                 DBHandler handler = new DBHandler(holder.itemView.getContext());
@@ -97,6 +85,18 @@ public class StudentAdapter extends RecyclerView.Adapter
     @Override
     public int getItemCount() {
         return studentList.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView nameTextView;
+        public Spinner attendanceSpinner;
+
+        public ViewHolder(@NonNull @NotNull View itemView) {
+            super(itemView);
+
+            nameTextView = itemView.findViewById(R.id.label_student);
+            attendanceSpinner = itemView.findViewById(R.id.spinner_attendance);
+        }
     }
 
 }

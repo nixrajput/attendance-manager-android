@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -34,9 +34,10 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_FACULTY_PASSWORD = "faculty_password";
 
     private static final String KEY_STUDENT_ID = "student_id";
+    private static final String KEY_STUDENT_ROLL = "student_roll";
     private static final String KEY_STUDENT_FIRSTNAME = "student_firstname";
     private static final String KEY_STUDENT_LASTNAME = "student_lastname";
-    private static final String KEY_STUDENT_MO_NO = "student_mobilenumber";
+    private static final String KEY_STUDENT_MOB_NO = "student_mobilenumber";
     private static final String KEY_STUDENT_ADDRESS = "student_address";
     private static final String KEY_STUDENT_BRANCH = "student_branch";
     private static final String KEY_STUDENT_SEM = "student_sem";
@@ -49,12 +50,15 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_ATTENDANCE_SESSION_SUBJECT = "attendance_session_subject";
 
     private static final String KEY_SESSION_ID = "attendance_session_id";
-    private static final String KEY_ATTENDANCE_STUDENT_ID = "attendance_student_id";
+    private static final String KEY_ATTENDANCE_STUDENT_ROLL = "attendance_student_roll";
     private static final String KEY_ATTENDANCE_STATUS = "attendance_status";
+
+    public final Context context;
 
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -65,20 +69,19 @@ public class DBHandler extends SQLiteOpenHelper {
                 KEY_FACULTY_LASTNAME + " TEXT, " +
                 KEY_FACULTY_MO_NO + " TEXT, " +
                 KEY_FACULTY_ADDRESS + " TEXT," +
-                KEY_FACULTY_USERNAME + " TEXT," +
+                KEY_FACULTY_USERNAME + " TEXT NOT NULL UNIQUE," +
                 KEY_FACULTY_PASSWORD + " TEXT " + ")";
-        Log.d("queryFaculty", queryFaculty);
 
 
         String queryStudent = "CREATE TABLE " + STUDENT_INFO_TABLE + " (" +
                 KEY_STUDENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                KEY_STUDENT_ROLL + " TEXT NOT NULL UNIQUE, " +
                 KEY_STUDENT_FIRSTNAME + " TEXT, " +
                 KEY_STUDENT_LASTNAME + " TEXT, " +
-                KEY_STUDENT_MO_NO + " TEXT, " +
+                KEY_STUDENT_MOB_NO + " TEXT, " +
                 KEY_STUDENT_ADDRESS + " TEXT," +
                 KEY_STUDENT_BRANCH + " TEXT," +
                 KEY_STUDENT_SEM + " TEXT " + ")";
-        Log.d("queryStudent", queryStudent);
 
 
         String queryAttendanceSession = "CREATE TABLE " + ATTENDANCE_SESSION_TABLE + " (" +
@@ -91,7 +94,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         String queryAttendance = "CREATE TABLE " + ATTENDANCE_TABLE + " (" +
                 KEY_SESSION_ID + " INTEGER, " +
-                KEY_ATTENDANCE_STUDENT_ID + " INTEGER, " +
+                KEY_ATTENDANCE_STUDENT_ROLL + " INTEGER, " +
                 KEY_ATTENDANCE_STATUS + " TEXT " + ")";
 
         try {
@@ -101,27 +104,29 @@ public class DBHandler extends SQLiteOpenHelper {
             db.execSQL(queryAttendance);
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String queryFaculty = "CREATE TABLE " + FACULTY_INFO_TABLE + " (" +
                 KEY_FACULTY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 KEY_FACULTY_FIRSTNAME + " TEXT, " +
                 KEY_FACULTY_LASTNAME + " TEXT, " +
                 KEY_FACULTY_MO_NO + " TEXT, " +
                 KEY_FACULTY_ADDRESS + " TEXT," +
-                KEY_FACULTY_USERNAME + " TEXT," +
+                KEY_FACULTY_USERNAME + " TEXT NOT NULL UNIQUE," +
                 KEY_FACULTY_PASSWORD + " TEXT " + ")";
 
 
         String queryStudent = "CREATE TABLE " + STUDENT_INFO_TABLE + " (" +
                 KEY_STUDENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                KEY_STUDENT_ROLL + " TEXT NOT NULL UNIQUE, " +
                 KEY_STUDENT_FIRSTNAME + " TEXT, " +
                 KEY_STUDENT_LASTNAME + " TEXT, " +
-                KEY_STUDENT_MO_NO + " TEXT, " +
+                KEY_STUDENT_MOB_NO + " TEXT, " +
                 KEY_STUDENT_ADDRESS + " TEXT," +
                 KEY_STUDENT_BRANCH + " TEXT," +
                 KEY_STUDENT_SEM + " TEXT " + ")";
@@ -138,7 +143,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         String queryAttendance = "CREATE TABLE " + ATTENDANCE_TABLE + " (" +
                 KEY_SESSION_ID + " INTEGER, " +
-                KEY_ATTENDANCE_STUDENT_ID + " INTEGER, " +
+                KEY_ATTENDANCE_STUDENT_ROLL + " INTEGER, " +
                 KEY_ATTENDANCE_STATUS + " TEXT " + ")";
 
         try {
@@ -148,6 +153,7 @@ public class DBHandler extends SQLiteOpenHelper {
             db.execSQL(queryAttendance);
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -168,7 +174,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public Faculty validateFaculty(String userName, String password) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "SELECT * FROM faculty_table where faculty_username='" + userName +
                 "' and faculty_password='" + password + "'";
@@ -193,7 +199,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public ArrayList<Faculty> getAllFaculty() {
         ArrayList<Faculty> list = new ArrayList<>();
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM faculty_table";
         Cursor cursor = db.rawQuery(query, null);
 
@@ -227,15 +233,18 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addStudent(Student student) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "INSERT INTO student_table (student_firstname, student_lastname," +
-                "student_mobilenumber, student_address, student_branch, student_sem) " +
+        String query = "INSERT INTO student_table (student_roll, student_firstname, " +
+                "student_lastname," + "student_mobilenumber, student_address, " +
+                "student_branch, student_sem) " +
                 "values ('" +
+                student.getStudent_roll() + "', '" +
                 student.getStudent_firstname() + "', '" +
                 student.getStudent_lastname() + "','" +
                 student.getStudent_mobile_number() + "', '" +
                 student.getStudent_address() + "', '" +
                 student.getStudent_branch() + "', '" +
                 student.getStudent_sem() + "')";
+
         db.execSQL(query);
         db.close();
     }
@@ -243,20 +252,20 @@ public class DBHandler extends SQLiteOpenHelper {
     public ArrayList<Student> getAllStudent() {
         ArrayList<Student> list = new ArrayList<>();
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM student_table";
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
                 Student student = new Student();
-                student.setStudent_id(Integer.parseInt(cursor.getString(0)));
-                student.setStudent_firstname(cursor.getString(1));
-                student.setStudent_lastname(cursor.getString(2));
-                student.setStudent_mobile_number(cursor.getString(3));
-                student.setStudent_address(cursor.getString(4));
-                student.setStudent_branch(cursor.getString(5));
-                student.setStudent_sem(cursor.getString(6));
+                student.setStudent_roll(cursor.getString(1));
+                student.setStudent_firstname(cursor.getString(2));
+                student.setStudent_lastname(cursor.getString(3));
+                student.setStudent_mobile_number(cursor.getString(4));
+                student.setStudent_address(cursor.getString(5));
+                student.setStudent_branch(cursor.getString(6));
+                student.setStudent_sem(cursor.getString(7));
                 list.add(student);
             } while (cursor.moveToNext());
         }
@@ -268,7 +277,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public ArrayList<Student> getAllStudentByBranchSem(String branch, String semester) {
         ArrayList<Student> list = new ArrayList<>();
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM student_table where student_branch='" + branch +
                 "' and student_sem='" + semester + "'";
         Cursor cursor = db.rawQuery(query, null);
@@ -276,13 +285,13 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Student student = new Student();
-                student.setStudent_id(Integer.parseInt(cursor.getString(0)));
-                student.setStudent_firstname(cursor.getString(1));
-                student.setStudent_lastname(cursor.getString(2));
-                student.setStudent_mobile_number(cursor.getString(3));
-                student.setStudent_address(cursor.getString(4));
-                student.setStudent_branch(cursor.getString(5));
-                student.setStudent_sem(cursor.getString(6));
+                student.setStudent_roll(cursor.getString(1));
+                student.setStudent_firstname(cursor.getString(2));
+                student.setStudent_lastname(cursor.getString(3));
+                student.setStudent_mobile_number(cursor.getString(4));
+                student.setStudent_address(cursor.getString(5));
+                student.setStudent_branch(cursor.getString(6));
+                student.setStudent_sem(cursor.getString(7));
                 list.add(student);
             } while (cursor.moveToNext());
         }
@@ -291,21 +300,21 @@ public class DBHandler extends SQLiteOpenHelper {
         return list;
     }
 
-    public Student getStudentById(int studentId) {
+    public Student getStudentByRollNo(String roll_no) {
         Student student = new Student();
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM student_table where student_id=" + studentId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM student_table where student_roll=" + roll_no;
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
-                student.setStudent_id(Integer.parseInt(cursor.getString(0)));
-                student.setStudent_firstname(cursor.getString(1));
-                student.setStudent_lastname(cursor.getString(2));
-                student.setStudent_mobile_number(cursor.getString(3));
-                student.setStudent_address(cursor.getString(4));
-                student.setStudent_branch(cursor.getString(5));
-                student.setStudent_sem(cursor.getString(6));
+                student.setStudent_roll(cursor.getString(1));
+                student.setStudent_firstname(cursor.getString(2));
+                student.setStudent_lastname(cursor.getString(3));
+                student.setStudent_mobile_number(cursor.getString(4));
+                student.setStudent_address(cursor.getString(5));
+                student.setStudent_branch(cursor.getString(6));
+                student.setStudent_sem(cursor.getString(7));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -313,10 +322,10 @@ public class DBHandler extends SQLiteOpenHelper {
         return student;
     }
 
-    public void deleteStudent(int studentId) {
+    public void deleteStudent(String roll_no) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "DELETE FROM student_table WHERE student_id=" + studentId;
+        String query = "DELETE FROM student_table WHERE student_roll=" + roll_no;
 
         db.execSQL(query);
         db.close();
@@ -349,7 +358,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public ArrayList<AttendanceSession> getAllAttendanceSession() {
         ArrayList<AttendanceSession> list = new ArrayList<>();
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM attendance_session_table";
         Cursor cursor = db.rawQuery(query, null);
 
@@ -385,7 +394,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         String query = "INSERT INTO attendance_table values (" +
                 attendance.getAttendance_session_id() + ", " +
-                attendance.getAttendance_student_id() + ", '" +
+                attendance.getAttendance_student_roll() + ", '" +
                 attendance.getAttendance_status() + "')";
         db.execSQL(query);
         db.close();
@@ -396,8 +405,10 @@ public class DBHandler extends SQLiteOpenHelper {
         int attendanceSessionId = 0;
         ArrayList<Attendance> list = new ArrayList<>();
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM attendance_session_table where attendance_session_faculty_id="
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM attendance_session_table WHERE " +
+                "attendance_session_faculty_id="
                 + attendanceSession.getAttendance_session_faculty_id() + ""
                 + " AND attendance_session_branch='"
                 + attendanceSession.getAttendance_session_branch()
@@ -415,15 +426,15 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        String query1 = "SELECT * FROM attendance_table where attendance_session_id=" +
-                attendanceSessionId + " order by attendance_student_id";
+        String query1 = "SELECT * FROM attendance_table WHERE attendance_session_id=" +
+                attendanceSessionId + " ORDER BY attendance_student_roll";
 
         Cursor cursor1 = db.rawQuery(query1, null);
         if (cursor1.moveToFirst()) {
             do {
                 Attendance attendanceBean = new Attendance();
                 attendanceBean.setAttendance_session_id(Integer.parseInt(cursor1.getString(0)));
-                attendanceBean.setAttendance_student_id(Integer.parseInt(cursor1.getString(1)));
+                attendanceBean.setAttendance_student_roll(cursor1.getString(1));
                 attendanceBean.setAttendance_status(cursor1.getString(2));
                 list.add(attendanceBean);
             } while (cursor1.moveToNext());
@@ -439,8 +450,10 @@ public class DBHandler extends SQLiteOpenHelper {
         int attendanceSessionId;
         ArrayList<Attendance> list = new ArrayList<>();
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM attendance_session_table WHERE attendance_session_faculty_id="
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM attendance_session_table WHERE " +
+                "attendance_session_faculty_id="
                 + attendanceSession.getAttendance_session_faculty_id() + ""
                 + " AND attendance_session_branch='"
                 + attendanceSession.getAttendance_session_branch()
@@ -455,13 +468,13 @@ public class DBHandler extends SQLiteOpenHelper {
                 attendanceSessionId = (Integer.parseInt(cursor.getString(0)));
 
                 String query1 = "SELECT * FROM attendance_table WHERE attendance_session_id=" +
-                        attendanceSessionId + " order by attendance_student_id";
+                        attendanceSessionId + " ORDER BY attendance_student_roll";
                 Cursor cursor1 = db.rawQuery(query1, null);
                 if (cursor1.moveToFirst()) {
                     do {
                         Attendance attendance = new Attendance();
                         attendance.setAttendance_session_id(Integer.parseInt(cursor1.getString(0)));
-                        attendance.setAttendance_student_id(Integer.parseInt(cursor1.getString(1)));
+                        attendance.setAttendance_student_roll(cursor1.getString(1));
                         attendance.setAttendance_status(cursor1.getString(2));
                         list.add(attendance);
 
@@ -485,16 +498,17 @@ public class DBHandler extends SQLiteOpenHelper {
     public ArrayList<Attendance> getAllAttendanceByStudent() {
         ArrayList<Attendance> list = new ArrayList<>();
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT attendance_student_id,count(*) FROM attendance_table where " +
-                "attendance_status='P' group by attendance_student_id";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT attendance_student_roll, count(*) FROM attendance_table WHERE " +
+                "attendance_status='P' GROUP BY attendance_student_roll";
 
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
                 Attendance attendance = new Attendance();
-                attendance.setAttendance_student_id(Integer.parseInt(cursor.getString(0)));
+                attendance.setAttendance_student_roll(cursor.getString(0));
                 attendance.setAttendance_session_id(Integer.parseInt(cursor.getString(1)));
                 list.add(attendance);
 

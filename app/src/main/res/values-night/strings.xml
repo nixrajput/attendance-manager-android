@@ -50,4 +50,5 @@
     <string name="ABSENT">A</string>
     <string name="PRESENT">P</string>
     <string name="ATTENDANCE">Attendance</string>
+    <string name="ROLL_NO">Roll No.</string>
 </resources>

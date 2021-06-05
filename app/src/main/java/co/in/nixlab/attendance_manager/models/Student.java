@@ -3,10 +3,12 @@ package co.in.nixlab.attendance_manager.models;
 public class Student {
 
     private int student_id;
+    private String student_roll;
     private String student_firstname;
     private String student_lastname;
     private String student_mobile_number;
     private String student_address;
+
     private String student_branch;
     private String student_sem;
 
@@ -16,6 +18,14 @@ public class Student {
 
     public void setStudent_id(int student_id) {
         this.student_id = student_id;
+    }
+
+    public String getStudent_roll() {
+        return student_roll;
+    }
+
+    public void setStudent_roll(String student_roll) {
+        this.student_roll = student_roll;
     }
 
     public String getStudent_firstname() {

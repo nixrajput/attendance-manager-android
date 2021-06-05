@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import co.in.nixlab.attendance_manager.R;
 import co.in.nixlab.attendance_manager.context.AppContext;
-import co.in.nixlab.attendance_manager.controllers.StudentAdapter;
+import co.in.nixlab.attendance_manager.controllers.StudentAttendanceAdapter;
 import co.in.nixlab.attendance_manager.models.Student;
 
 public class AddAttendanceActivity extends AppCompatActivity {
@@ -23,7 +23,7 @@ public class AddAttendanceActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_recycler_view);
+        setContentView(R.layout.recycler_view_layout);
 
         sessionId = getIntent().getExtras().getInt("sessionId");
 
@@ -33,7 +33,7 @@ public class AddAttendanceActivity extends AppCompatActivity {
         studentBeanList = ((AppContext) AddAttendanceActivity.this
                 .getApplicationContext()).getStudentList();
 
-        StudentAdapter adapter = new StudentAdapter(studentBeanList, sessionId);
+        StudentAttendanceAdapter adapter = new StudentAttendanceAdapter(studentBeanList, sessionId);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

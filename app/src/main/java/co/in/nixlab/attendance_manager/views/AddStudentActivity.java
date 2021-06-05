@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +23,7 @@ public class AddStudentActivity extends AppCompatActivity {
     private final String[] branchString = new String[]{"CSE", "ME", "EE", "CE", "ECE"};
     private final String[] SemString = new String[]{"1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"};
     Button saveBtn;
+    EditText studentRoll;
     EditText studentFirstName;
     EditText studentLastName;
     EditText studentPhone;
@@ -37,12 +39,13 @@ public class AddStudentActivity extends AppCompatActivity {
         setContentView(R.layout.add_student);
 
         contextView = findViewById(android.R.id.content).getRootView();
-        spinnerBranch = (Spinner) findViewById(R.id.spinner_branch);
-        spinnerSem = (Spinner) findViewById(R.id.spinner_sem);
-        studentFirstName = (EditText) findViewById(R.id.ed_first_name);
-        studentLastName = (EditText) findViewById(R.id.ed_last_name);
-        studentPhone = (EditText) findViewById(R.id.ed_student_phone);
-        studentAddress = (EditText) findViewById(R.id.ed_student_address);
+        spinnerBranch = (Spinner) findViewById(R.id.spinner_stu_branch);
+        spinnerSem = (Spinner) findViewById(R.id.spinner_stu_sem);
+        studentRoll = findViewById(R.id.ed_stu_roll_no);
+        studentFirstName = (EditText) findViewById(R.id.ed_stu_first_name);
+        studentLastName = (EditText) findViewById(R.id.ed_stu_last_name);
+        studentPhone = (EditText) findViewById(R.id.ed_stu_mob_no);
+        studentAddress = (EditText) findViewById(R.id.ed_stu_address);
         saveBtn = (Button) findViewById(R.id.save_student_btn);
 
         spinnerBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -80,12 +83,15 @@ public class AddStudentActivity extends AppCompatActivity {
         spinnerSem.setAdapter(adapter_year);
 
         saveBtn.setOnClickListener(v -> {
+            String roll_no = studentRoll.getText().toString();
             String first_name = studentFirstName.getText().toString();
             String last_name = studentLastName.getText().toString();
             String phone_no = studentPhone.getText().toString();
             String address = studentAddress.getText().toString();
 
-            if (TextUtils.isEmpty(first_name)) {
+            if (TextUtils.isEmpty(roll_no)) {
+                studentRoll.setError("Please enter roll number");
+            } else if (TextUtils.isEmpty(first_name)) {
                 studentFirstName.setError("Please enter firstname");
             } else if (TextUtils.isEmpty(last_name)) {
                 studentLastName.setError("Please enter lastname");
@@ -95,21 +101,29 @@ public class AddStudentActivity extends AppCompatActivity {
                 studentAddress.setError("Please enter address");
             } else {
 
-                Student studentBean = new Student();
+                Student student = new Student();
 
-                studentBean.setStudent_firstname(first_name);
-                studentBean.setStudent_lastname(last_name);
-                studentBean.setStudent_mobile_number(phone_no);
-                studentBean.setStudent_address(address);
-                studentBean.setStudent_branch(branch);
-                studentBean.setStudent_sem(semester);
+                student.setStudent_roll(roll_no);
+                student.setStudent_firstname(first_name);
+                student.setStudent_lastname(last_name);
+                student.setStudent_mobile_number(phone_no);
+                student.setStudent_address(address);
+                student.setStudent_branch(branch);
+                student.setStudent_sem(semester);
 
                 DBHandler dbHandler = new DBHandler(AddStudentActivity.this);
-                dbHandler.addStudent(studentBean);
 
-                Intent intent = new Intent(AddStudentActivity.this, DashboardActivity.class);
-                startActivity(intent);
-//                Snackbar.make(contextView, "Student added successfully", Snackbar.LENGTH_LONG).show();
+                try {
+                    dbHandler.addStudent(student);
+                    Intent intent = new Intent(AddStudentActivity.this, DashboardActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "Student added successfully",
+                            Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

@@ -69,11 +69,15 @@ public class AddFacultyActivity extends AppCompatActivity {
                 facultyBean.setFaculty_password(passWord);
 
                 DBHandler dbHandler = new DBHandler(AddFacultyActivity.this);
-                dbHandler.addFaculty(facultyBean);
 
-                Intent intent = new Intent(AddFacultyActivity.this, DashboardActivity.class);
-                startActivity(intent);
-                Toast.makeText(getApplicationContext(), "Faculty added successfully", Toast.LENGTH_SHORT).show();
+                try {
+                    dbHandler.addFaculty(facultyBean);
+                    Intent intent = new Intent(AddFacultyActivity.this, DashboardActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "Faculty added successfully", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

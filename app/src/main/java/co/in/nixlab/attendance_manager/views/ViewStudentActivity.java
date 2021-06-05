@@ -27,8 +27,8 @@ public class ViewStudentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_student);
 
-        spinnerBranch = findViewById(R.id.spinner_branch);
-        spinnerSem = findViewById(R.id.spinner_sem);
+        spinnerBranch = findViewById(R.id.spinner_stu_branch);
+        spinnerSem = findViewById(R.id.spinner_stu_sem);
         nextBtn = findViewById(R.id.next_btn);
 
         spinnerBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

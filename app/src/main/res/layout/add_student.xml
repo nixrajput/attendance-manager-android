@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -40,7 +39,17 @@
         app:layout_constraintTop_toBottomOf="@+id/divider2">
 
         <EditText
-            android:id="@+id/ed_first_name"
+            android:id="@+id/ed_stu_roll_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:autofillHints="@string/ROLL_NO"
+            android:ems="10"
+            android:hint="@string/ROLL_NO"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/ed_stu_first_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -50,7 +59,7 @@
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/ed_last_name"
+            android:id="@+id/ed_stu_last_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -60,7 +69,7 @@
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/ed_student_phone"
+            android:id="@+id/ed_stu_mob_no"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -70,7 +79,7 @@
             android:inputType="phone" />
 
         <EditText
-            android:id="@+id/ed_student_address"
+            android:id="@+id/ed_stu_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -88,7 +97,7 @@
             android:textSize="18sp" />
 
         <Spinner
-            android:id="@+id/spinner_branch"
+            android:id="@+id/spinner_stu_branch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp" />
@@ -102,7 +111,7 @@
             android:textSize="18sp" />
 
         <Spinner
-            android:id="@+id/spinner_sem"
+            android:id="@+id/spinner_stu_sem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp" />

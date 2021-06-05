@@ -3,7 +3,7 @@ package co.in.nixlab.attendance_manager.models;
 public class Attendance {
 
     private int attendance_session_id;
-    private int attendance_student_id;
+    private String attendance_student_roll;
     private String attendance_status;
 
     public int getAttendance_session_id() {
@@ -14,12 +14,12 @@ public class Attendance {
         this.attendance_session_id = attendance_session_id;
     }
 
-    public int getAttendance_student_id() {
-        return attendance_student_id;
+    public String getAttendance_student_roll() {
+        return attendance_student_roll;
     }
 
-    public void setAttendance_student_id(int attendance_student_id) {
-        this.attendance_student_id = attendance_student_id;
+    public void setAttendance_student_roll(String attendance_student_roll) {
+        this.attendance_student_roll = attendance_student_roll;
     }
 
     public String getAttendance_status() {
