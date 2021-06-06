@@ -28,7 +28,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.dashboard);
 
         addStudent = findViewById(R.id.add_student_btn);
         addFaculty = findViewById(R.id.add_faculty_btn);

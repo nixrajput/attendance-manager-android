@@ -1,6 +1,7 @@
 package co.in.nixlab.attendance_manager.controllers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import co.in.nixlab.attendance_manager.R;
 import co.in.nixlab.attendance_manager.models.Faculty;
+import co.in.nixlab.attendance_manager.views.ViewFacultyDetailsActivity;
 
 public class FacultyListAdapter extends RecyclerView.Adapter
         <FacultyListAdapter.ViewHolder> {
@@ -49,6 +51,13 @@ public class FacultyListAdapter extends RecyclerView.Adapter
         roll_no.setText(String.valueOf(faculty.getFaculty_id()));
         String fullName = faculty.getFaculty_firstname() + " " + faculty.getFaculty_lastname();
         name.setText(fullName);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(),
+                    ViewFacultyDetailsActivity.class);
+            intent.putExtra("faculty_id", faculty.getFaculty_id());
+            holder.itemView.getContext().startActivity(intent);
+        });
 
         holder.itemView.setOnLongClickListener(v -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog

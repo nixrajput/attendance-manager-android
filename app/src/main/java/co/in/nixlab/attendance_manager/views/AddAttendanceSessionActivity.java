@@ -157,7 +157,7 @@ public class AddAttendanceSessionActivity extends AppCompatActivity {
         viewTotalAttendance = findViewById(R.id.view_total_attendance_btn);
         viewTotalAttendance.setOnClickListener(arg0 -> {
             AttendanceSession attendanceSession = new AttendanceSession();
-            Faculty faculty = ((AppContext) AddAttendanceSessionActivity.this
+            Faculty faculty = ((AppContext) this
                     .getApplicationContext()).getFaculty();
 
             attendanceSession.setAttendance_session_faculty_id(faculty.getFaculty_id());
@@ -169,7 +169,7 @@ public class AddAttendanceSessionActivity extends AppCompatActivity {
 
             ArrayList<Attendance> attendanceList = dbHandler
                     .getTotalAttendanceBySessionID(attendanceSession);
-            ((AppContext) AddAttendanceSessionActivity.this.getApplicationContext())
+            ((AppContext) this.getApplicationContext())
                     .setAttendanceList(attendanceList);
 
             Intent intent = new Intent(AddAttendanceSessionActivity.this,

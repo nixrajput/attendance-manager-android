@@ -55,4 +55,6 @@
     <string name="STUDENT_LIST">Student List</string>
     <string name="FACULTY_LIST">Faculty List</string>
     <string name="ATTENDANCE_REPORT">Attendance Report</string>
+    <string name="STUDENT_DETAILS">Student Details</string>
+    <string name="FACULTY_DETAILS">Faculty Details</string>
 </resources>

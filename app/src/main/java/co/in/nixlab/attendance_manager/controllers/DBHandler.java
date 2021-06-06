@@ -1,5 +1,6 @@
 package co.in.nixlab.attendance_manager.controllers;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -53,8 +54,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_ATTENDANCE_STUDENT_ROLL = "attendance_student_roll";
     private static final String KEY_ATTENDANCE_STATUS = "attendance_status";
 
-    public final Context context;
-
+    private final Context context;
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -94,7 +94,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         String queryAttendance = "CREATE TABLE " + ATTENDANCE_TABLE + " (" +
                 KEY_SESSION_ID + " INTEGER, " +
-                KEY_ATTENDANCE_STUDENT_ROLL + " INTEGER, " +
+                KEY_ATTENDANCE_STUDENT_ROLL + " TEXT, " +
                 KEY_ATTENDANCE_STATUS + " TEXT " + ")";
 
         try {
@@ -104,7 +104,7 @@ public class DBHandler extends SQLiteOpenHelper {
             db.execSQL(queryAttendance);
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context.getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -137,13 +137,13 @@ public class DBHandler extends SQLiteOpenHelper {
                 KEY_ATTENDANCE_SESSION_FACULTY_ID + " INTEGER, " +
                 KEY_ATTENDANCE_SESSION_BRANCH + " TEXT, " +
                 KEY_ATTENDANCE_SESSION_SEM + " TEXT, " +
-                KEY_ATTENDANCE_SESSION_DATE + " TEXT," +
+                KEY_ATTENDANCE_SESSION_DATE + " DATE," +
                 KEY_ATTENDANCE_SESSION_SUBJECT + " TEXT" + ")";
 
 
         String queryAttendance = "CREATE TABLE " + ATTENDANCE_TABLE + " (" +
                 KEY_SESSION_ID + " INTEGER, " +
-                KEY_ATTENDANCE_STUDENT_ROLL + " INTEGER, " +
+                KEY_ATTENDANCE_STUDENT_ROLL + " TEXT, " +
                 KEY_ATTENDANCE_STATUS + " TEXT " + ")";
 
         try {
@@ -153,7 +153,7 @@ public class DBHandler extends SQLiteOpenHelper {
             db.execSQL(queryAttendance);
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context.getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -325,7 +325,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public Student getStudentByRollNo(String roll_no) {
         Student student = new Student();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM student_table where student_roll=" + roll_no;
+        String query = "SELECT * FROM student_table WHERE student_roll=" + roll_no;
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
@@ -356,23 +356,34 @@ public class DBHandler extends SQLiteOpenHelper {
     public int addAttendanceSession(AttendanceSession attendanceSession) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "INSERT INTO attendance_session_table (attendance_session_faculty_id, " +
-                "attendance_session_branch, attendance_session_sem, attendance_session_date," +
-                "attendance_session_subject) values ('" +
-                attendanceSession.getAttendance_session_faculty_id() + "', '" +
-                attendanceSession.getAttendance_session_branch() + "','" +
-                attendanceSession.getAttendance_session_sem() + "', '" +
-                attendanceSession.getAttendance_session_date() + "', '" +
-                attendanceSession.getAttendance_session_subject() + "')";
-        db.execSQL(query);
+        String check_duplicate = "SELECT attendance_session_id FROM attendance_session_table " +
+                "WHERE attendance_session_date=?";
+        Cursor duplicate = db.rawQuery(check_duplicate,
+                new String[]{attendanceSession.getAttendance_session_date()});
 
-        String get_max_sessionId = "SELECT max(attendance_session_id) FROM attendance_session_table";
-        Cursor cursor = db.rawQuery(get_max_sessionId, null);
+        if (duplicate.moveToFirst()) {
+            return Integer.parseInt(duplicate.getString(0));
+        } else {
+            String query = "INSERT INTO attendance_session_table (attendance_session_faculty_id, " +
+                    "attendance_session_branch, attendance_session_sem, attendance_session_date," +
+                    "attendance_session_subject) VALUES ('" +
+                    attendanceSession.getAttendance_session_faculty_id() + "', '" +
+                    attendanceSession.getAttendance_session_branch() + "','" +
+                    attendanceSession.getAttendance_session_sem() + "', '" +
+                    attendanceSession.getAttendance_session_date() + "', '" +
+                    attendanceSession.getAttendance_session_subject() + "')";
+            db.execSQL(query);
 
-        if (cursor.moveToFirst()) {
-            return Integer.parseInt(cursor.getString(0));
+            String get_max_sessionId = "SELECT max(attendance_session_id) FROM attendance_session_table";
+            Cursor cursor = db.rawQuery(get_max_sessionId, null);
+
+            if (cursor.moveToFirst()) {
+                return Integer.parseInt(cursor.getString(0));
+            }
+
+            cursor.close();
         }
-        cursor.close();
+        duplicate.close();
         db.close();
         return 0;
     }
@@ -414,11 +425,26 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addNewAttendance(Attendance attendance) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "INSERT INTO attendance_table values (" +
-                attendance.getAttendance_session_id() + ", " +
-                attendance.getAttendance_student_roll() + ", '" +
-                attendance.getAttendance_status() + "')";
-        db.execSQL(query);
+        String check_duplicate = "SELECT attendance_session_id FROM attendance_table " +
+                "WHERE attendance_session_id=" + attendance.getAttendance_session_id() +
+                " AND attendance_student_roll=" + attendance.getAttendance_student_roll();
+        Cursor duplicate = db.rawQuery(check_duplicate, null);
+
+        if (duplicate.moveToFirst()) {
+            ContentValues updateValues = new ContentValues();
+            updateValues.put("attendance_status", attendance.getAttendance_status());
+            db.update(ATTENDANCE_TABLE, updateValues, "attendance_student_roll = ? AND " +
+                            "attendance_session_id = ?",
+                    new String[]{attendance.getAttendance_student_roll(),
+                            String.valueOf(attendance.getAttendance_session_id())});
+        } else {
+            String query = "INSERT INTO attendance_table VALUES (" +
+                    attendance.getAttendance_session_id() + ", " +
+                    attendance.getAttendance_student_roll() + ", '" +
+                    attendance.getAttendance_status() + "')";
+            db.execSQL(query);
+        }
+        duplicate.close();
         db.close();
     }
 
@@ -489,6 +515,11 @@ public class DBHandler extends SQLiteOpenHelper {
             do {
                 attendanceSessionId = (Integer.parseInt(cursor.getString(0)));
 
+                Attendance attendance0 = new Attendance();
+                attendance0.setAttendance_session_id(0);
+                attendance0.setAttendance_date("Date : " + cursor.getString(4));
+                list.add(attendance0);
+
                 String query1 = "SELECT * FROM attendance_table WHERE attendance_session_id=" +
                         attendanceSessionId + " ORDER BY attendance_student_roll";
                 Cursor cursor1 = db.rawQuery(query1, null);
@@ -499,14 +530,10 @@ public class DBHandler extends SQLiteOpenHelper {
                         attendance.setAttendance_student_roll(cursor1.getString(1));
                         attendance.setAttendance_status(cursor1.getString(2));
                         list.add(attendance);
-
                     } while (cursor1.moveToNext());
                 }
 
-                Attendance attendance = new Attendance();
-                attendance.setAttendance_session_id(0);
-                attendance.setAttendance_status("Date : " + cursor.getString(4));
-                list.add(attendance);
+
                 cursor1.close();
             } while (cursor.moveToNext());
 
@@ -540,193 +567,4 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
         return list;
     }
-	/*public ArrayList<AttendanceBean> getAllAttendanceBySessionID(int sessionId)
-	{
-		ArrayList<AttendanceBean> list = new ArrayList<AttendanceBean>();
-
-		SQLiteDatabase db = this.getWritableDatabase();
-		String query = "SELECT * FROM attendance_table where attendance_session_id=" + sessionId;
-		Cursor cursor = db.rawQuery(query, null);
-
-		if(!cursor.moveToFirst()) 
-		{
-			do{
-				AttendanceBean attendanceBean = new AttendanceBean();
-				attendanceBean.setAttendance_session_id(Integer.parseInt(cursor.getString(0)));
-				attendanceBean.setAttendance_student_id(Integer.parseInt(cursor.getString(1)));
-				attendanceBean.setAttendance_status(cursor.getString(2));
-				list.add(attendanceBean);
-
-			}while(cursor.moveToNext());
-		}
-		return list;
-	}*/
-
-
-    // Creating Tables
-	/*@Override
-	public void onCreate(SQLiteDatabase db) {
-		String CREATE_User_Info_TABLE = "CREATE TABLE " + TABLE_INFO_USER + "("
-				+ KEY_ID + " INTEGER PRIMARY KEY, " + KEY_FIRSTNAME + " TEXT, "+ KEY_LASTNAME + " TEXT, " +KEY_MO_NO +" TEXT, "
-				+KEY_EMAIL +" TEXT, " +KEY_USERNAME +" TEXT, " + KEY_PASSWORD +" TEXT " + ")";
-
-		Log.d("rupali",CREATE_User_Info_TABLE );
-		db.execSQL(CREATE_User_Info_TABLE);
-	}
-
-	// Upgrading database
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// Drop older table if existed
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_INFO_USER);
-
-		// Create tables again
-		onCreate(db);
-	}
-
-	void addUserInfo(UserInfo userinfo) {
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		ContentValues values = new ContentValues();
-		values.put(KEY_FIRSTNAME, userinfo.getUser_Firstname()); //  Name
-		values.put(KEY_LASTNAME, userinfo.getUser_Lastname()); //  Name
-		values.put(KEY_MO_NO, userinfo.getUser_MobileNo()); // Contact Phone
-		values.put(KEY_EMAIL, userinfo.getUser_EmailId());
-		values.put(KEY_USERNAME, userinfo.getUser_Username());
-		values.put(KEY_PASSWORD, userinfo.getUser_Password());
-
-		// Inserting Row
-		db.insert(TABLE_INFO_USER, null, values);
-		//2nd argument is String containing nullColumnHack
-		db.close(); // Closing database connection
-	}
-
-
-	// Getting single contact
-	UserInfo getUserInfo(int id) {
-		SQLiteDatabase db = this.getReadableDatabase();
-
-		Cursor cursor = db.query(TABLE_INFO_USER, new String[] { KEY_ID,
-				KEY_FIRSTNAME, KEY_LASTNAME,KEY_MO_NO,  KEY_EMAIL, KEY_USERNAME, KEY_PASSWORD }, KEY_ID + "=?",
-				new String[] { String.valueOf(id) }, null, null, null, null);
-		if (cursor != null)
-			cursor.moveToFirst();
-
-		UserInfo userinfo = new UserInfo(Integer.parseInt(cursor.getString(0)),
-				cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4),cursor.getString(5),cursor.getString(6));
-		// return contact
-				return userinfo;
-	}
-
-	public UserInfo validateUser(String username, String password)
-	{
-		SQLiteDatabase db = this.getReadableDatabase();
-		String query = "Select * from User_Info_Table WHERE User_Username='"+ username +"' AND User_Password='"+password+"'";
-		Log.d("Rupali", "Login QUERY:" + query);
-
-		Cursor cursor = db.rawQuery(query, null);
-
-
-		if(!cursor.moveToFirst()) 
-		{
-			Log.d("Rupali", "cursor is null.. returing NULL");
-			return null;
-		}
-		Log.d("Rupali", "cursor is NOT null.. we got user data...");
-
-
-		UserInfo userinfo = new UserInfo(Integer.parseInt(cursor.getString(0)),
-				cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4),cursor.getString(5),cursor.getString(6));
-
-		return userinfo;
-	}
-
-	// Updating single contact
-	public int updateUserPassword(UserInfo userinfo) {
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		ContentValues values = new ContentValues();
-		values.put(KEY_PASSWORD, userinfo.getUser_Password());
-
-
-		// updating row
-		return db.update(TABLE_INFO_USER, values, KEY_ID + " = ?",
-				new String[] { String.valueOf(userinfo.getUser_id()) });
-	}
-
-	public int updateUserContact(UserInfo userinfo) {
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		ContentValues values = new ContentValues();
-		values.put(KEY_MO_NO, userinfo.getUser_MobileNo());
-		values.put(KEY_EMAIL, userinfo.getUser_EmailId());
-
-
-		// updating row
-		return db.update(TABLE_INFO_USER, values, KEY_ID + " = ?",
-				new String[] { String.valueOf(userinfo.getUser_id()) });
-	}
-
-
-	//veiw details
-
-	public UserInfo viewUserInfo(String id) {
-		SQLiteDatabase db = this.getReadableDatabase();
-
-		String query = "Select * from User_Info_Table WHERE id='"+id+"'";
-		Cursor cursor = db.rawQuery(query, null);
-		if(!cursor.moveToFirst()) 
-		{
-			Log.d("Rupali", "cursor is null.. returing NULL");
-			return null;
-		}
-		Log.d("Rupali", "cursor is NOT null.. we got user data...");
-
-		UserInfo userinfo = new UserInfo(Integer.parseInt(cursor.getString(0)),
-				cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4),cursor.getString(5),cursor.getString(6));
-		// return contact
-		return userinfo;
-	}
-
-
-
-	 // Getting All users
-    public List<UserInfo> getAllUserInfo() {
-        List<UserInfo> userinfolist = new ArrayList<UserInfo>();
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_INFO_USER;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-
-                UserInfo userinfo=new UserInfo();
-
-                userinfo.setUser_id(Integer.parseInt(cursor.getString(0)));
-                userinfo.setUser_Lastname(cursor.getString(2));
-                userinfo.setUser_Username(cursor.getString(5));
-                userinfo.setUser_Firstname(cursor.getString(1));
-
-
-
-                // Adding contact to list
-                userinfolist.add(userinfo);
-            } while (cursor.moveToNext());
-        }
-
-        // return contact list
-        return userinfolist;
-    }
-
-    // Deleting single contact
-    public void deleteUser(UserInfo userinfo) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_INFO_USER, KEY_ID + " = ?",
-                new String[] { String.valueOf(userinfo.getUser_id()) });
-        db.close();
-    }
-	  */
 }

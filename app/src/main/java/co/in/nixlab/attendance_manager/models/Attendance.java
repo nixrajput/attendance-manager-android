@@ -5,6 +5,7 @@ public class Attendance {
     private int attendance_session_id;
     private String attendance_student_roll;
     private String attendance_status;
+    private String attendance_date;
 
     public int getAttendance_session_id() {
         return attendance_session_id;
@@ -30,5 +31,12 @@ public class Attendance {
         this.attendance_status = attendance_status;
     }
 
+    public String getAttendance_date() {
+        return attendance_date;
+    }
+
+    public void setAttendance_date(String attendance_date) {
+        this.attendance_date = attendance_date;
+    }
 
 }
