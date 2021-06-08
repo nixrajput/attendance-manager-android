@@ -5,8 +5,8 @@ Attendance Manager application for Android.
 - Nikhil Kumar
 
 ## Usage
-Admin Username : `admin`
-Admin Password : `pass`
+-- Admin Username : `admin`
+-- Admin Password : `pass`
 
 ### Connect with me
 
