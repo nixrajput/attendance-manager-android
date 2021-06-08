@@ -4,6 +4,10 @@ Attendance Manager application for Android.
 ## Author
 - Nikhil Kumar
 
+## Usage
+Admin Username : `admin`
+Admin Password : `pass`
+
 ### Connect with me
 
 [<img align="left" alt="nixrajput | Website" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/globe-icon.svg" />][website]
