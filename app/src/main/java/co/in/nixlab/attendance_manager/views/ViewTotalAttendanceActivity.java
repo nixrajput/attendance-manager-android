@@ -13,14 +13,11 @@ import java.util.ArrayList;
 import co.in.nixlab.attendance_manager.R;
 import co.in.nixlab.attendance_manager.context.AppContext;
 import co.in.nixlab.attendance_manager.controllers.AttendanceAdapter;
-import co.in.nixlab.attendance_manager.controllers.DBHandler;
 import co.in.nixlab.attendance_manager.models.Attendance;
 
 public class ViewTotalAttendanceActivity extends AppCompatActivity {
 
     ArrayList<Attendance> attendanceList;
-
-    DBHandler dbHandler = new DBHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
