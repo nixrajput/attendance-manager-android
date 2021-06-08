@@ -4,9 +4,37 @@ Attendance Manager application for Android.
 ## Author
 - Nikhil Kumar
 
+## Features
+- Add Student
+- View Student
+- Add Faculty
+- View Faculty
+- Manage Attendance
+
 ## Usage
 - Admin Username : `admin`
 - Admin Password : `pass`
+
+## Screenshots
+
+### Screenshot 1
+<img width="300px" src="/screenshots/1.jpg" align="center" alt="Screenshot1" />
+
+### Screenshot 2
+<img width="300px" src="/screenshots/2.jpg" align="center" alt="Screenshot2" />
+
+### Screenshot 3
+<img width="300px" src="/screenshots/3.jpg" align="center" alt="Screenshot3" />
+
+### Screenshot 4
+<img width="300px" src="/screenshots/4.jpg" align="center" alt="Screenshot4" />
+
+### Screenshot 5
+<img width="300px" src="/screenshots/5.jpg" align="center" alt="Screenshot5" />
+
+### Screenshot 6
+<img width="300px" src="/screenshots/6.jpg" align="center" alt="Screenshot6" />
+
 
 ### Connect with me
 
