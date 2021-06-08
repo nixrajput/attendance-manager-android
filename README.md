@@ -1,5 +1,5 @@
 # Attendance Manager
-Attendance Manager application for Android.
+Attendance Manager application for Android developed using Java, SQLite and Shared Preferences.
 
 ## Author
 - Nikhil Kumar
@@ -17,22 +17,22 @@ Attendance Manager application for Android.
 
 ## Screenshots
 
-### Screenshot 1
+### Main Screen
 <img width="300px" src="/screenshots/1.jpg" align="center" alt="Screenshot1" />
 
-### Screenshot 2
+### Login Screen
 <img width="300px" src="/screenshots/2.jpg" align="center" alt="Screenshot2" />
 
-### Screenshot 3
+### Admin Dashboard Screen
 <img width="300px" src="/screenshots/3.jpg" align="center" alt="Screenshot3" />
 
-### Screenshot 4
+### Attendance Management Screen
 <img width="300px" src="/screenshots/4.jpg" align="center" alt="Screenshot4" />
 
-### Screenshot 5
+### Add Attendance Screen
 <img width="300px" src="/screenshots/5.jpg" align="center" alt="Screenshot5" />
 
-### Screenshot 6
+### View Attendance Screen
 <img width="300px" src="/screenshots/6.jpg" align="center" alt="Screenshot6" />
 
 
